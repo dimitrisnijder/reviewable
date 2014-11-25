@@ -4,12 +4,14 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.LogInCallback;
@@ -17,25 +19,37 @@ import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 
-
 public class LoginActivity extends Activity {
 
     protected EditText username;
     protected EditText password;
     protected Button registerButton;
     protected Button loginButton;
+    protected Typeface pacificoFace;
+    protected Typeface proximaFace;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        int titleId = getResources().getIdentifier("action_bar_title", "id", "android");
+        TextView yourTextView = (TextView) findViewById(titleId);
+        pacificoFace = Typeface.createFromAsset(getAssets(), "fonts/Pacifico.ttf");
+        yourTextView.setTypeface(pacificoFace);
+
+        proximaFace = Typeface.createFromAsset(getAssets(), "fonts/ProximaNova-Regular.otf");
+
         Parse.initialize(this, "HS0km68yDCSvgftT2KILmFET7DFNESfH1rhVSmR2", "X4G5wb3DokD8aARe8lnLAk2HHDxdGTtsmhQQLw99");
 
-        username = (EditText)findViewById(R.id.usernameLogin);
-        password = (EditText)findViewById(R.id.passwordLogin);
-        registerButton = (Button)findViewById(R.id.loginRegisterButton);
-        loginButton = (Button)findViewById(R.id.loginButton);
+        username = (EditText) findViewById(R.id.usernameLogin);
+        password = (EditText) findViewById(R.id.passwordLogin);
+        registerButton = (Button) findViewById(R.id.loginRegisterButton);
+        loginButton = (Button) findViewById(R.id.loginButton);
+
+        username.setTypeface(proximaFace);
+        registerButton.setTypeface(proximaFace);
+        loginButton.setTypeface(proximaFace);
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -76,7 +90,6 @@ public class LoginActivity extends Activity {
             }
         });
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
