@@ -12,5 +12,6 @@
     <string name="register">Register</string>
     <string name="login">Login</string>
     <string name="title_activity_login">LoginActivity</string>
+    <string name="title_activity_review">ReviewActivity</string>
 
 </resources>

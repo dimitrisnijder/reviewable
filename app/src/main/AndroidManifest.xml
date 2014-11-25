@@ -27,6 +27,10 @@
             android:name="nl.hr.reviewable.RegisterActivity"
             android:label="@string/title_activity_register" >
         </activity>
+        <activity
+            android:name="nl.hr.reviewable.ReviewActivity"
+            android:label="@string/title_activity_review" >
+        </activity>
     </application>
 
 </manifest>
