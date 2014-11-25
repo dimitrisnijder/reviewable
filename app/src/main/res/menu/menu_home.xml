@@ -1,0 +1,12 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" tools:context="nl.hr.reviewable.HomeActivity">
+
+    <item android:id="@+id/new_review"
+        android:title="Add review"
+        android:showAsAction="ifRoom" />
+
+    <item android:id="@+id/logout"
+        android:title="Logout"
+        android:showAsAction="never" />
+
+</menu>
