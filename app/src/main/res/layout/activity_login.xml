@@ -24,6 +24,13 @@
         android:id="@+id/loginButton"
         android:text="@string/login" />
 
+    <nl.hr.reviewable.CustomTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        nl.hr.reviewable:fontName="ProximaNova-Regular.otf"
+        android:text="Custom Android Font" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
