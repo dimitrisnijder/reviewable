@@ -1,45 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:reviewable="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
     android:orientation="vertical" >
 
-    <EditText
+    <nl.hr.reviewable.CustomEditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/usernameLogin"
-        android:hint="@string/username" />
+        android:hint="@string/username"
+        android:background="@drawable/edit_text_style"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="13dp"
+        reviewable:editTextFontName="ProximaNova-Regular.otf" />
 
-    <EditText
+    <nl.hr.reviewable.CustomEditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/passwordLogin"
-        android:hint="@string/password" />
+        android:hint="@string/password"
+        android:background="@drawable/edit_text_style"
+        android:password="true"
+        reviewable:editTextFontName="ProximaNova-Regular.otf" />
 
-    <Button
+    <nl.hr.reviewable.CustomButton
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/loginButton"
-        android:text="@string/login" />
+        android:text="@string/login"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="15dp"
+        reviewable:buttonFontName="ProximaNova-Regular.otf" />
 
-    <nl.hr.reviewable.CustomTextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        nl.hr.reviewable:fontName="ProximaNova-Regular.otf"
-        android:text="Custom Android Font" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="or"
-        android:layout_gravity="center" />
-
-    <Button
+    <nl.hr.reviewable.CustomButton
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/loginRegisterButton"
+        reviewable:buttonFontName="ProximaNova-Regular.otf"
         android:text="@string/register" />
 </LinearLayout>
