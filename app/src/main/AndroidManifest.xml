@@ -12,7 +12,8 @@
         android:theme="@style/ReviewableTheme" >
         <activity
             android:name="nl.hr.reviewable.LoginActivity"
-            android:label="@string/title_activity_login" >
+            android:label="@string/title_activity_login"
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -25,7 +26,8 @@
         </activity>
         <activity
             android:name="nl.hr.reviewable.RegisterActivity"
-            android:label="@string/title_activity_register" >
+            android:label="@string/title_activity_register"
+            android:windowSoftInputMode="adjustResize" >
         </activity>
         <activity
             android:name="nl.hr.reviewable.ReviewActivity"

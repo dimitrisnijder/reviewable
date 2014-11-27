@@ -5,6 +5,7 @@
         parent="@android:style/Theme.Holo.Light.DarkActionBar">
         <item name="android:actionBarStyle">@style/ActionBar</item>
         <item name="android:buttonStyle">@style/Button</item>
+        <item name="android:editTextStyle">@style/EditText</item>
     </style>
 
     <!-- ActionBar styles -->
@@ -17,7 +18,11 @@
         <item name="android:textColor">@color/white</item>
         <item name="android:paddingTop">10dp</item>
         <item name="android:paddingBottom">10dp</item>
-        <item name="android:textSize">17dp</item>
+        <item name="android:textSize">14dp</item>
+    </style>
+
+    <style name="EditText" parent="@android:style/Widget.EditText">
+        <item name="android:textSize">14dp</item>
     </style>
 
 </resources>

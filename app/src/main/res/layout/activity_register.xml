@@ -1,32 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:reviewable="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
+    android:paddingLeft="60dp"
+    android:paddingRight="60dp"
+    android:paddingTop="20dp"
     android:orientation="vertical" >
 
-    <EditText
+    <nl.hr.reviewable.CustomEditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/usernameRegister"
-        android:hint="@string/username" />
-    <EditText
+        android:hint="@string/username"
+        android:layout_marginBottom="10dp"
+        reviewable:editTextFontName="ProximaNova-Regular.otf"
+        android:background="@drawable/edit_text_style" />
+
+    <nl.hr.reviewable.CustomEditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/emailRegister"
-        android:hint="@string/email" />
+        android:hint="@string/email"
+        android:layout_marginBottom="10dp"
+        reviewable:editTextFontName="ProximaNova-Regular.otf"
+        android:background="@drawable/edit_text_style" />
 
-    <EditText
+    <nl.hr.reviewable.CustomEditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/passwordRegister"
-        android:hint="@string/password" />
+        android:hint="@string/password"
+        android:layout_marginBottom="20dp"
+        reviewable:editTextFontName="ProximaNova-Regular.otf"
+        android:background="@drawable/edit_text_style" />
 
-    <Button
-        android:layout_width="100dp"
+    <nl.hr.reviewable.CustomButton
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="right"
         android:id="@+id/registerButton"
-        android:text="@string/register" />
+        android:text="@string/register"
+        reviewable:buttonFontName="ProximaNova-Regular.otf" />
 </LinearLayout>
