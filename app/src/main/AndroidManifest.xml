@@ -27,7 +27,8 @@
         <activity
             android:name="nl.hr.reviewable.RegisterActivity"
             android:label="@string/title_activity_register"
-            android:windowSoftInputMode="adjustResize" >
+            android:windowSoftInputMode="adjustResize"
+            android:parentActivityName="nl.hr.reviewable.LoginActivity" >
         </activity>
         <activity
             android:name="nl.hr.reviewable.ReviewActivity"

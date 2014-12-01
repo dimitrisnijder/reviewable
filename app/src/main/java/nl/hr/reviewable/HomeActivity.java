@@ -37,6 +37,8 @@ public class HomeActivity extends Activity {
             case R.id.new_review:
                 Intent reviewIntent = new Intent(HomeActivity.this, ReviewActivity.class);
                 startActivity(reviewIntent);
+                this.finish();
+
                 break;
             case R.id.logout:
                 ParseUser currentUser = ParseUser.getCurrentUser();
@@ -46,6 +48,7 @@ public class HomeActivity extends Activity {
 
                 Intent loginIntent = new Intent(HomeActivity.this, LoginActivity.class);
                 startActivity(loginIntent);
+                this.finish();
 
                 break;
         }
