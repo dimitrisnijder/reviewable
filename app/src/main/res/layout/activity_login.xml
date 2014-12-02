@@ -20,7 +20,8 @@
             android:hint="@string/username"
             android:background="@drawable/edit_text_style"
             android:layout_marginBottom="10dp"
-            reviewable:editTextFontName="ProximaNova-Regular.otf" />
+            reviewable:editTextFontName="ProximaNova-Regular.otf"
+            android:singleLine="true" />
 
         <nl.hr.reviewable.CustomEditText
             android:layout_width="match_parent"
@@ -30,7 +31,8 @@
             android:hint="@string/password"
             android:background="@drawable/edit_text_style"
             android:password="true"
-            reviewable:editTextFontName="ProximaNova-Regular.otf" />
+            reviewable:editTextFontName="ProximaNova-Regular.otf"
+            android:singleLine="true" />
 
         <nl.hr.reviewable.CustomButton
             android:layout_width="match_parent"

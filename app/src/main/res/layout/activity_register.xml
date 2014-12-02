@@ -15,7 +15,8 @@
         android:hint="@string/username"
         android:layout_marginBottom="10dp"
         reviewable:editTextFontName="ProximaNova-Regular.otf"
-        android:background="@drawable/edit_text_style" />
+        android:background="@drawable/edit_text_style"
+        android:singleLine="true" />
 
     <nl.hr.reviewable.CustomEditText
         android:layout_width="match_parent"
@@ -24,7 +25,8 @@
         android:hint="@string/email"
         android:layout_marginBottom="10dp"
         reviewable:editTextFontName="ProximaNova-Regular.otf"
-        android:background="@drawable/edit_text_style" />
+        android:background="@drawable/edit_text_style"
+        android:singleLine="true" />
 
     <nl.hr.reviewable.CustomEditText
         android:layout_width="match_parent"
@@ -33,7 +35,8 @@
         android:hint="@string/password"
         android:layout_marginBottom="20dp"
         reviewable:editTextFontName="ProximaNova-Regular.otf"
-        android:background="@drawable/edit_text_style" />
+        android:background="@drawable/edit_text_style"
+        android:singleLine="true" />
 
     <nl.hr.reviewable.CustomButton
         android:layout_width="match_parent"

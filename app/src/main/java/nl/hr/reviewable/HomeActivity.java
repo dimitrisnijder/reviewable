@@ -2,20 +2,30 @@ package nl.hr.reviewable;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.parse.ParseUser;
 
 
 public class HomeActivity extends Activity {
 
+    protected Typeface face;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        getActionBar().setDisplayShowHomeEnabled(false);
 
+        int titleId = getResources().getIdentifier("action_bar_title", "id", "android");
+        TextView titleTextView = (TextView) findViewById(titleId);
+        titleTextView.setTextColor(getResources().getColor(R.color.white));
+        face = Typeface.createFromAsset(getAssets(), "fonts/Pacifico.ttf");
+        titleTextView.setTypeface(face);
     }
 
 
