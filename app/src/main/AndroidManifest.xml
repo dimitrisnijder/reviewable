@@ -11,8 +11,8 @@
         android:label="@string/app_name"
         android:theme="@style/ReviewableTheme" >
         <activity
-            android:name="nl.hr.reviewable.LoginActivity"
-            android:label="@string/title_activity_login" >
+            android:name=".HomeActivity"
+            android:label="@string/title_activity_home" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -20,16 +20,20 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="nl.hr.reviewable.HomeActivity"
-            android:label="@string/title_activity_home" >
+            android:name=".LoginActivity"
+            android:label="@string/title_activity_login" >
         </activity>
         <activity
-            android:name="nl.hr.reviewable.RegisterActivity"
+            android:name=".RegisterActivity"
             android:label="@string/title_activity_register" >
         </activity>
         <activity
-            android:name="nl.hr.reviewable.ReviewActivity"
+            android:name=".ReviewActivity"
             android:label="@string/title_activity_review" >
+        </activity>
+        <activity
+            android:name=".ReviewDetailView"
+            android:label="@string/title_activity_review_detail_view" >
         </activity>
     </application>
 

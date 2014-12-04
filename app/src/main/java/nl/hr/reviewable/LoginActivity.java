@@ -36,6 +36,14 @@ public class LoginActivity extends Activity {
         registerButton = (Button) findViewById(R.id.loginRegisterButton);
         loginButton = (Button) findViewById(R.id.loginButton);
 
+        registerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent takeUserToRegister = new Intent(LoginActivity.this, RegisterActivity.class);
+                startActivity(takeUserToRegister);
+            }
+        });
+
         loginButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
