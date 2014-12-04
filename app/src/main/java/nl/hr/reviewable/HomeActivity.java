@@ -2,11 +2,13 @@ package nl.hr.reviewable;
 
 import android.app.ListActivity;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.parse.FindCallback;
 import com.parse.Parse;
@@ -21,10 +23,13 @@ public class HomeActivity extends ListActivity {
 
     protected List<ParseObject> mReview;
 
+    protected Typeface face;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        getActionBar().setDisplayShowHomeEnabled(false);
 
         Parse.initialize(this, "HS0km68yDCSvgftT2KILmFET7DFNESfH1rhVSmR2", "X4G5wb3DokD8aARe8lnLAk2HHDxdGTtsmhQQLw99");
 
@@ -56,6 +61,12 @@ public class HomeActivity extends ListActivity {
             Intent goToLogin = new Intent(HomeActivity.this, LoginActivity.class);
             startActivity(goToLogin);
         }
+
+        int titleId = getResources().getIdentifier("action_bar_title", "id", "android");
+        TextView titleTextView = (TextView) findViewById(titleId);
+        titleTextView.setTextColor(getResources().getColor(R.color.white));
+        face = Typeface.createFromAsset(getAssets(), "fonts/Pacifico.ttf");
+        titleTextView.setTypeface(face);
     }
 
 
@@ -77,6 +88,8 @@ public class HomeActivity extends ListActivity {
             case R.id.new_review:
                 Intent reviewIntent = new Intent(HomeActivity.this, ReviewActivity.class);
                 startActivity(reviewIntent);
+                this.finish();
+
                 break;
             case R.id.logout:
                 ParseUser currentUser = ParseUser.getCurrentUser();
@@ -86,6 +99,7 @@ public class HomeActivity extends ListActivity {
 
                 Intent loginIntent = new Intent(HomeActivity.this, LoginActivity.class);
                 startActivity(loginIntent);
+                this.finish();
 
                 break;
         }

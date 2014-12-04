@@ -1,44 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:reviewable="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
-    android:orientation="vertical" >
+    android:layout_height="match_parent" >
 
-    <nl.hr.reviewable.CustomEditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/usernameLogin"
-        android:hint="@string/username"
-        android:background="@drawable/edit_text_style"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="13dp"
-        reviewable:editTextFontName="ProximaNova-Regular.otf" />
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:paddingLeft="60dp"
+        android:paddingRight="60dp"
+        android:paddingBottom="15dp"
+        android:orientation="vertical"
+        android:layout_gravity="bottom">
 
-    <nl.hr.reviewable.CustomEditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/passwordLogin"
-        android:hint="@string/password"
-        android:background="@drawable/edit_text_style"
-        android:password="true"
-        reviewable:editTextFontName="ProximaNova-Regular.otf" />
+        <nl.hr.reviewable.CustomEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/usernameLogin"
+            android:hint="@string/username"
+            android:background="@drawable/edit_text_style"
+            android:layout_marginBottom="10dp"
+            reviewable:editTextFontName="ProximaNova-Regular.otf"
+            android:singleLine="true" />
 
-    <nl.hr.reviewable.CustomButton
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/loginButton"
-        android:text="@string/login"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="15dp"
-        reviewable:buttonFontName="ProximaNova-Regular.otf" />
+        <nl.hr.reviewable.CustomEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/passwordLogin"
+            android:layout_below="@id/usernameLogin"
+            android:hint="@string/password"
+            android:background="@drawable/edit_text_style"
+            android:password="true"
+            reviewable:editTextFontName="ProximaNova-Regular.otf"
+            android:singleLine="true" />
 
-    <nl.hr.reviewable.CustomButton
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/loginRegisterButton"
-        reviewable:buttonFontName="ProximaNova-Regular.otf"
-        android:text="@string/register" />
-</LinearLayout>
+        <nl.hr.reviewable.CustomButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/loginButton"
+            android:layout_below="@id/passwordLogin"
+            android:text="@string/login"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"
+            reviewable:buttonFontName="ProximaNova-Regular.otf" />
+
+        <nl.hr.reviewable.CustomButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/loginRegisterButton"
+            android:layout_below="@id/loginButton"
+            reviewable:buttonFontName="ProximaNova-Regular.otf"
+            android:text="@string/register" />
+
+    </LinearLayout>
+</ScrollView>

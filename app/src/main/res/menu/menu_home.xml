@@ -3,6 +3,7 @@
 
     <item android:id="@+id/new_review"
         android:title="Add review"
+        android:icon="@drawable/ic_action_new"
         android:showAsAction="ifRoom" />
 
     <item android:id="@+id/logout"
