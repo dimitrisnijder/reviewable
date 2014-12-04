@@ -1,6 +1,8 @@
 package nl.hr.reviewable;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -9,7 +11,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
+
+import com.parse.Parse;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 
 public class ReviewActivity extends Activity {
@@ -17,14 +27,103 @@ public class ReviewActivity extends Activity {
     protected Button cameraButton;
     protected ImageView imageView;
     static final int REQUEST_IMAGE_CAPTURE = 1;
+    protected EditText reviewTitle;
+    protected EditText reviewText;
+    protected EditText reviewTags;
+
+    protected Button reviewButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_review);
 
+        Parse.initialize(this, "HS0km68yDCSvgftT2KILmFET7DFNESfH1rhVSmR2", "X4G5wb3DokD8aARe8lnLAk2HHDxdGTtsmhQQLw99");
+
+        reviewTitle = (EditText)findViewById(R.id.reviewTitle);
+        reviewText = (EditText)findViewById(R.id.reviewText);
+        reviewTags = (EditText)findViewById(R.id.reviewTags);
+
+        reviewButton = (Button)findViewById(R.id.reviewButton);
+
         cameraButton = (Button)findViewById(R.id.cameraButton);
         imageView = (ImageView)findViewById(R.id.mImageView);
+
+        // Review
+        reviewButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Get user
+                ParseUser currentUser = ParseUser.getCurrentUser();
+                String currentUsername = currentUser.getUsername();
+
+                // Get review
+                String userTitle = reviewTitle.getText().toString();
+                String userReview = reviewText.getText().toString();
+                String userTags = reviewTags.getText().toString();
+
+                if (userTitle == "") {
+                    // If review is empty
+                    AlertDialog.Builder builder = new AlertDialog.Builder(ReviewActivity.this);
+                    builder.setMessage("Title is empty")
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    // Create the AlertDialog object and return it
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                }
+                else if (userReview == "") {
+                    // If review is empty
+                    AlertDialog.Builder builder = new AlertDialog.Builder(ReviewActivity.this);
+                    builder.setMessage("Review is empty")
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    // Create the AlertDialog object and return it
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                }
+                else {
+                    // Save to parse
+                    ParseObject reviewObject = new ParseObject("Review");
+                    reviewObject.put("userTitle", userTitle);
+                    reviewObject.put("userReview", userReview);
+                    reviewObject.put("userTags", userTags);
+                    reviewObject.put("user", currentUsername);
+                    reviewObject.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if (e == null) {
+                                // Great success
+                                Toast.makeText(ReviewActivity.this, "Reviewabled!", Toast.LENGTH_LONG).show();
+
+                                // To home screen
+                                Intent goToHome = new Intent(ReviewActivity.this, HomeActivity.class);
+                                startActivity(goToHome);
+                            } else {
+                                // Oops
+                                AlertDialog.Builder builder = new AlertDialog.Builder(ReviewActivity.this);
+                                builder.setMessage("Login failed")
+                                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int id) {
+                                                dialog.dismiss();
+                                            }
+                                        });
+                                // Create the AlertDialog object and return it
+                                AlertDialog dialog = builder.create();
+                                dialog.show();
+                            }
+                        }
+                    });
+
+                }
+            }
+        });
 
         cameraButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
