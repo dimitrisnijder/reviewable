@@ -23,6 +23,7 @@ public class HomeActivity extends Activity {
 
         int titleId = getResources().getIdentifier("action_bar_title", "id", "android");
         TextView titleTextView = (TextView) findViewById(titleId);
+        titleTextView.setTextSize(getResources().getDimension(R.dimen.title_size));
         titleTextView.setTextColor(getResources().getColor(R.color.white));
         face = Typeface.createFromAsset(getAssets(), "fonts/Pacifico.ttf");
         titleTextView.setTypeface(face);

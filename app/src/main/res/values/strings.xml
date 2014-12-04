@@ -13,5 +13,5 @@
     <string name="login">Login</string>
     <string name="title_activity_login">Login</string>
     <string name="title_activity_review">Review</string>
-
+    <string name="take_photo">Take photo</string>
 </resources>
