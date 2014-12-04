@@ -13,6 +13,11 @@
         android:textColor="@color/blue"
         android:drawableLeft="@drawable/ic_user"/>
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageHome" />
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

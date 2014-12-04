@@ -17,9 +17,13 @@ import android.widget.Toast;
 
 import com.parse.Parse;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
+
+import java.io.ByteArrayOutputStream;
+import java.util.Random;
 
 
 public class ReviewActivity extends Activity {
@@ -32,6 +36,7 @@ public class ReviewActivity extends Activity {
     protected EditText reviewTags;
 
     protected Button reviewButton;
+    protected Bitmap bitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,12 +94,29 @@ public class ReviewActivity extends Activity {
                     dialog.show();
                 }
                 else {
+                    // Converting of the image
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+
+                    // Compress image to lower quality
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                    byte[] image = stream.toByteArray();
+
+                    // Generate random number for filename
+                    Random r = new Random();
+                    int i1 = r.nextInt(999999999 - 100000000) + 10000000;
+
+                    // Create file in Parse
+                    ParseFile file = new ParseFile(currentUsername+i1+".png", image);
+
                     // Save to parse
                     ParseObject reviewObject = new ParseObject("Review");
                     reviewObject.put("userTitle", userTitle);
                     reviewObject.put("userReview", userReview);
                     reviewObject.put("userTags", userTags);
                     reviewObject.put("user", currentUsername);
+
+                    reviewObject.put("userImageFile", file);
+
                     reviewObject.saveInBackground(new SaveCallback() {
                         @Override
                         public void done(ParseException e) {
@@ -144,8 +166,8 @@ public class ReviewActivity extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            imageView.setImageBitmap(imageBitmap);
+            bitmap = (Bitmap) extras.get("data");
+            imageView.setImageBitmap(bitmap);
         }
     }
 

@@ -1,12 +1,18 @@
 package nl.hr.reviewable;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.parse.GetDataCallback;
+import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseObject;
 
 import java.util.List;
@@ -18,6 +24,7 @@ public class ReviewAdapter extends ArrayAdapter<ParseObject> {
 
     protected Context mContext;
     protected List<ParseObject> mReview;
+    protected ImageView imageHome;
 
     public ReviewAdapter (Context context, List<ParseObject> review) {
         super(context, R.layout.homelayout, review);
@@ -41,6 +48,8 @@ public class ReviewAdapter extends ArrayAdapter<ParseObject> {
                     .findViewById(R.id.reviewHome);
             holder.tagsHomepage = (TextView) convertView
                     .findViewById(R.id.tagsHome);
+            //holder.imageHomepage = (ImageView) convertView
+                    //.findViewById(R.id.imageHome);
 
             convertView.setTag(holder);
         }
@@ -66,6 +75,24 @@ public class ReviewAdapter extends ArrayAdapter<ParseObject> {
         String tags = reviewObject.getString("userTags");
         holder.tagsHomepage.setText(tags);
 
+        // Image
+        ParseFile image = (ParseFile)reviewObject.getParseFile("userImageFile");
+        image.getDataInBackground(new GetDataCallback() {
+            @Override
+            public void done(byte[] bytes, ParseException e) {
+                if(e == null) {
+                    Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                    imageHome.findViewById(R.id.imageHome);
+                    imageHome.setImageBitmap(bmp);
+                    //holder.imageHomepage.setParseFile(bmp);
+                }
+                else {
+                    //wrong
+                }
+            }
+        });
+
+
 
         return convertView;
     }
@@ -75,6 +102,7 @@ public class ReviewAdapter extends ArrayAdapter<ParseObject> {
         TextView titleHomepage;
         TextView reviewHomepage;
         TextView tagsHomepage;
+        //ImageView imageHomepage;
     }
 
 }
