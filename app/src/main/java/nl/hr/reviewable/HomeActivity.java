@@ -4,9 +4,12 @@ import android.app.ListActivity;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -22,8 +25,9 @@ import java.util.List;
 public class HomeActivity extends ListActivity {
 
     protected List<ParseObject> mReview;
-
+    protected SwipeRefreshLayout swipeLayout;
     protected Typeface face;
+    protected ListView list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,8 +35,56 @@ public class HomeActivity extends ListActivity {
         setContentView(R.layout.activity_home);
         getActionBar().setDisplayShowHomeEnabled(false);
 
+        int titleId = getResources().getIdentifier("action_bar_title", "id", "android");
+        TextView titleTextView = (TextView) findViewById(titleId);
+        titleTextView.setTextSize(getResources().getDimension(R.dimen.title_size));
+        titleTextView.setTextColor(getResources().getColor(R.color.white));
+        face = Typeface.createFromAsset(getAssets(), "fonts/Pacifico.ttf");
+        titleTextView.setTypeface(face);
+
         Parse.initialize(this, "HS0km68yDCSvgftT2KILmFET7DFNESfH1rhVSmR2", "X4G5wb3DokD8aARe8lnLAk2HHDxdGTtsmhQQLw99");
 
+        getReviews();
+
+        list = getListView();
+        swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
+        swipeLayout.setEnabled(false);
+
+        swipeLayout.setColorScheme(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+
+        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeLayout.setRefreshing(true);
+                ( new Handler()).postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        swipeLayout.setRefreshing(false);
+                    }
+                }, 3000);
+            }
+        });
+
+        list.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                if (firstVisibleItem == 0)
+                    swipeLayout.setEnabled(true);
+                else
+                    swipeLayout.setEnabled(false);
+            }
+        });
+    }
+
+    public void getReviews() {
         ParseUser currentUser = ParseUser.getCurrentUser();
         if (currentUser != null) {
             // Show home screen with reviews
@@ -50,8 +102,6 @@ public class HomeActivity extends ListActivity {
                     }
                     else {
                         // Oops
-
-
                     }
                 }
             });
@@ -61,15 +111,7 @@ public class HomeActivity extends ListActivity {
             Intent goToLogin = new Intent(HomeActivity.this, LoginActivity.class);
             startActivity(goToLogin);
         }
-
-        int titleId = getResources().getIdentifier("action_bar_title", "id", "android");
-        TextView titleTextView = (TextView) findViewById(titleId);
-        titleTextView.setTextSize(getResources().getDimension(R.dimen.title_size));
-        titleTextView.setTextColor(getResources().getColor(R.color.white));
-        face = Typeface.createFromAsset(getAssets(), "fonts/Pacifico.ttf");
-        titleTextView.setTypeface(face);
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -118,8 +160,5 @@ public class HomeActivity extends ListActivity {
         Intent toDetailView = new Intent(HomeActivity.this, ReviewDetailView.class);
         toDetailView.putExtra("objectID",objectId);
         startActivity(toDetailView);
-
-        // Get ID
-        //Toast.makeText(getApplicationContext(), objectId, Toast.LENGTH_LONG).show();
     }
 }
