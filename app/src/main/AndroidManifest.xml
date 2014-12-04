@@ -34,10 +34,13 @@
         </activity>
         <activity
             android:name=".ReviewActivity"
+            android:parentActivityName="nl.hr.reviewable.HomeActivity"
+            android:windowSoftInputMode="adjustResize"
             android:label="@string/title_activity_review" >
         </activity>
         <activity
             android:name=".ReviewDetailView"
+            android:parentActivityName="nl.hr.reviewable.HomeActivity"
             android:label="@string/title_activity_review_detail_view" >
         </activity>
     </application>

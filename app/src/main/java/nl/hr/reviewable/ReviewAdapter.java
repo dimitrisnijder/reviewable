@@ -20,7 +20,7 @@ public class ReviewAdapter extends ArrayAdapter<ParseObject> {
     protected List<ParseObject> mReview;
 
     public ReviewAdapter (Context context, List<ParseObject> review) {
-        super(context, R.layout.homelayout, review);
+        super(context, R.layout.review_listitem, review);
         mContext = context;
         mReview = review;
     }
@@ -31,7 +31,7 @@ public class ReviewAdapter extends ArrayAdapter<ParseObject> {
 
         if (convertView == null) {
             convertView = LayoutInflater.from(mContext).inflate(
-                    R.layout.homelayout, null);
+                    R.layout.review_listitem, null);
             holder = new ViewHolder();
             holder.usernameHomepage = (TextView) convertView
                     .findViewById(R.id.usernameHome);

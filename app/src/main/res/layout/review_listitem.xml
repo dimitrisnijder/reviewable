@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:reviewable="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    
+    <nl.hr.reviewable.CustomTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/usernameHome"
+        android:text="Username"
+        android:gravity="center_vertical"
+        android:textColor="@color/blue"
+        android:drawableLeft="@drawable/ic_user"
+        reviewable:fontName="ProximaNova-Regular.otf" />
+
+    <nl.hr.reviewable.CustomTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/titleHome"
+        android:textSize="20dp"
+        android:text="Title"
+        reviewable:fontName="ProximaNova-Regular.otf" />
+
+    <nl.hr.reviewable.CustomTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/reviewHome"
+        android:textSize="14dp"
+        android:text="Review"
+        android:maxLength="50"
+        android:ellipsize="end"
+        android:maxLines="2"
+        reviewable:fontName="ProximaNova-Regular.otf" />
+
+    <nl.hr.reviewable.CustomTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tagsHome"
+        android:textSize="12dp"
+        android:text="Tags"
+        reviewable:fontName="ProximaNova-Regular.otf" />
+
+</LinearLayout>
