@@ -48,12 +48,8 @@ public class HomeActivity extends ListActivity {
 
         list = getListView();
         swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
+        swipeLayout.setColorSchemeResources(R.color.blue);
         swipeLayout.setEnabled(false);
-
-        swipeLayout.setColorScheme(android.R.color.holo_blue_bright,
-                android.R.color.holo_green_light,
-                android.R.color.holo_orange_light,
-                android.R.color.holo_red_light);
 
         swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -62,6 +58,7 @@ public class HomeActivity extends ListActivity {
                 ( new Handler()).postDelayed(new Runnable() {
                     @Override
                     public void run() {
+                        getReviews();
                         swipeLayout.setRefreshing(false);
                     }
                 }, 3000);
@@ -71,15 +68,12 @@ public class HomeActivity extends ListActivity {
         list.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
-
             }
 
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                if (firstVisibleItem == 0)
-                    swipeLayout.setEnabled(true);
-                else
-                    swipeLayout.setEnabled(false);
+                int topRowVerticalPosition = (list == null || list.getChildCount() == 0) ? 0 : list.getChildAt(0).getTop();
+                swipeLayout.setEnabled(topRowVerticalPosition >= 0);
             }
         });
     }
