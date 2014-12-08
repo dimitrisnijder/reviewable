@@ -37,6 +37,7 @@ public class ReviewAdapter extends ArrayAdapter<ParseObject> {
             convertView = LayoutInflater.from(mContext).inflate(
                     R.layout.review_listitem, null);
             holder = new ViewHolder();
+
             holder.usernameHomepage = (TextView) convertView
                     .findViewById(R.id.usernameHome);
             holder.titleHomepage = (TextView) convertView
@@ -79,7 +80,6 @@ public class ReviewAdapter extends ArrayAdapter<ParseObject> {
 
             holder.imageHomepage.loadInBackground(new GetDataCallback() {
                 public void done(byte[] data, ParseException e) {
-                    // The image is loaded and displayed!
                 }
             });
         }

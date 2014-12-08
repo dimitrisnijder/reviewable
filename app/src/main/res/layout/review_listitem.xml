@@ -6,17 +6,21 @@
     android:orientation="vertical" >
     
     <RelativeLayout
+        android:id="@+id/imageLayout"
         android:layout_width="fill_parent"
-        android:layout_height="230dp"
-        android:background="@drawable/gradient">
+        android:layout_height="230dp">
 
         <com.parse.ParseImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/imageHome"
             android:adjustViewBounds="true"
-            android:scaleType="centerCrop"
-            android:alpha=".65" />
+            android:scaleType="centerCrop" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/overlayHome"/>
 
         <nl.hr.reviewable.CustomTextView
             android:layout_width="match_parent"
