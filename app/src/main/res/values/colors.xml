@@ -4,4 +4,8 @@
     <color name="white">#FFF</color>
     <color name="blue">#3498DB</color>
     <color name="transparent_black">#87000000</color>
+    <color name="tab_dark_gray">#363636</color>
+    <color name="list_divider">#ff2b2b2b</color>
+    <color name="tab_lighter_gray">#434343</color>
+    <color name="green">#2ECD71</color>
 </resources>
