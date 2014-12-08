@@ -5,10 +5,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ShareActionProvider;
 import android.widget.TextView;
 
 import com.parse.GetCallback;
+import com.parse.GetDataCallback;
 import com.parse.ParseException;
+import com.parse.ParseFile;
+import com.parse.ParseImageView;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
@@ -20,17 +24,24 @@ public class ReviewDetailView extends Activity {
     protected TextView mTitle;
     protected TextView mReview;
     protected TextView mTags;
+    protected TextView mRating;
+    protected TextView mLikes;
+    protected ParseImageView mImage;
 
+    private ShareActionProvider mShareActionProvider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_review_detail_view);
 
-        mUser = (TextView)findViewById(R.id.reviewDetailUser);
-        mTitle = (TextView)findViewById(R.id.reviewDetailTitle);
-        mReview = (TextView)findViewById(R.id.reviewDetailView);
-        mTags = (TextView)findViewById(R.id.reviewDetailTags);
+        mUser = (TextView)findViewById(R.id.usernameDetail);
+        mTitle = (TextView)findViewById(R.id.titleDetail);
+        mReview = (TextView)findViewById(R.id.reviewDetail);
+        mTags = (TextView)findViewById(R.id.tagsDetail);
+        mRating = (TextView)findViewById(R.id.ratingDetail);
+        mLikes = (TextView)findViewById(R.id.likesDetail);
+        mImage = (ParseImageView)findViewById(R.id.imageDetail);
 
         // Intent
         Intent intent = getIntent();
@@ -55,6 +66,22 @@ public class ReviewDetailView extends Activity {
                     String userTags = parseObject.getString("userTags");
                     mTags.setText(userTags);
 
+                    // Nog aangemaakt worden in Parse
+                    //String userRating = parseObject.getString();
+                    //mRating.setText(userRating);
+
+                    // Nog aangemaakt worden in Parse
+                    //String userLikes = parseObject.getString();
+                    //mLikes.setText(userLikes);
+
+                    ParseFile userImage = parseObject.getParseFile("userImageFile");
+                    mImage.setParseFile(userImage);
+
+                    mImage.loadInBackground(new GetDataCallback() {
+                        public void done(byte[] data, ParseException e) {
+                            // The image is loaded and displayed!
+                        }
+                    });
                 }
                 else {
                     // Oops
@@ -80,6 +107,27 @@ public class ReviewDetailView extends Activity {
         if (id == R.id.action_settings) {
             return true;
         }
+        if (id == R.id.action_share) {
+            // Fetch and store ShareActionProvider
+            mShareActionProvider = (ShareActionProvider) item.getActionProvider();
+
+            Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+            sharingIntent.setType("text/plain");
+            String shareBody = "Here is the share content body";
+            sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Subject Here");
+            sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+            startActivity(Intent.createChooser(sharingIntent, "Share via"));
+
+            return true;
+        }
         return super.onOptionsItemSelected(item);
+    }
+
+    // Call to update the share intent
+    private void setShareIntent(Intent shareIntent) {
+        if (mShareActionProvider != null) {
+            mShareActionProvider.setShareIntent(shareIntent);
+
+        }
     }
 }
