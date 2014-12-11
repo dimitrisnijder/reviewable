@@ -15,12 +15,14 @@
             android:layout_height="match_parent"
             android:id="@+id/imageHome"
             android:adjustViewBounds="true"
+            android:orientation="vertical"
             android:scaleType="centerCrop" />
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/overlayHome"/>
+            android:id="@+id/gradientHome"
+            android:background="@drawable/gradient3"/>
 
         <nl.hr.reviewable.CustomTextView
             android:layout_width="match_parent"

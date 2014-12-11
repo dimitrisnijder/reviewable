@@ -72,7 +72,8 @@ public class ReviewAdapter extends ArrayAdapter<ParseObject> {
 
             // Tags
             String tags = reviewObject.getString("userTags");
-            holder.tagsHomepage.setText(tags);
+            String tagLines = tags.replaceAll(",", "\n");
+            holder.tagsHomepage.setText(tagLines);
 
             // Image
             ParseFile image = reviewObject.getParseFile("userImageFile");

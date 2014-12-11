@@ -1,11 +1,14 @@
 package nl.hr.reviewable;
 
 import android.app.ListActivity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,6 +22,7 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -28,12 +32,29 @@ public class HomeActivity extends ListActivity {
     protected SwipeRefreshLayout swipeLayout;
     protected Typeface face;
     protected ListView list;
+    protected int reviewCount;
+    protected boolean flag_loading;
+    protected ReviewAdapter adapter;
+    protected View footerView;
+    protected int currentFirstVisibleItem = 0;
+    protected int currentVisibleItemCount = 0;
+    protected int currentTotalItemCount = 0;
+    protected int currentScrollState = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         getActionBar().setDisplayShowHomeEnabled(false);
+
+        reviewCount = 3;
+
+        footerView = ((LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.review_list_footer, null, false);
+        getListView().addFooterView(footerView);
+
+        mReview = new ArrayList<ParseObject>();
+        adapter = new ReviewAdapter(getListView().getContext(), mReview);
+        setListAdapter(adapter);
 
         int titleId = getResources().getIdentifier("action_bar_title", "id", "android");
         TextView titleTextView = (TextView) findViewById(titleId);
@@ -44,7 +65,7 @@ public class HomeActivity extends ListActivity {
 
         Parse.initialize(this, "HS0km68yDCSvgftT2KILmFET7DFNESfH1rhVSmR2", "X4G5wb3DokD8aARe8lnLAk2HHDxdGTtsmhQQLw99");
 
-        getReviews();
+        getReviews(0);
 
         list = getListView();
         swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
@@ -58,7 +79,7 @@ public class HomeActivity extends ListActivity {
                 ( new Handler()).postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        getReviews();
+                        getReviews(0);
                         swipeLayout.setRefreshing(false);
                     }
                 }, 3000);
@@ -68,31 +89,49 @@ public class HomeActivity extends ListActivity {
         list.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
+                currentScrollState = scrollState;
+                isScrollCompleted();
             }
 
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
                 int topRowVerticalPosition = (list == null || list.getChildCount() == 0) ? 0 : list.getChildAt(0).getTop();
                 swipeLayout.setEnabled(topRowVerticalPosition >= 0);
+
+                currentFirstVisibleItem = firstVisibleItem;
+                currentVisibleItemCount = visibleItemCount;
+                currentTotalItemCount = totalItemCount;
+            }
+
+            private void isScrollCompleted() {
+                if (currentVisibleItemCount > 0 && currentScrollState == SCROLL_STATE_IDLE && currentTotalItemCount == (currentFirstVisibleItem + currentVisibleItemCount)) {
+                    if (!flag_loading) {
+                        flag_loading = true;
+                        Log.d("reviewable", currentVisibleItemCount + "");
+                        getReviews(currentVisibleItemCount);
+                    }
+                }
             }
         });
     }
 
-    public void getReviews() {
+    public void getReviews(int position) {
+        Log.d("reviewable", "GETTING REVIEWS");
         ParseUser currentUser = ParseUser.getCurrentUser();
         if (currentUser != null) {
             // Show home screen with reviews
             ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Review");
             query.orderByDescending("createdAt");
+            query.setSkip(position);
+            query.setLimit(reviewCount);
             query.findInBackground(new FindCallback<ParseObject>() {
                 @Override
                 public void done(List<ParseObject> parseObjects, com.parse.ParseException e) {
                     if (e == null) {
                         // Success : list of reviews
 
-                        mReview = parseObjects;
-                        ReviewAdapter adapter = new ReviewAdapter(getListView().getContext(), mReview);
-                        setListAdapter(adapter);
+                        mReview.addAll(parseObjects);
+                        adapter.notifyDataSetChanged();
                     }
                     else {
                         // Oops
