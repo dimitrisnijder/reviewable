@@ -18,8 +18,13 @@
                 android:layout_height="match_parent"
                 android:id="@+id/imageDetail"
                 android:adjustViewBounds="true"
-                android:scaleType="centerCrop"
-                android:alpha=".65" />
+                android:scaleType="centerCrop" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/gradientHome"
+                android:background="@drawable/gradient3"/>
 
             <nl.hr.reviewable.CustomTextView
                 android:layout_width="match_parent"
@@ -48,21 +53,9 @@
 
         </RelativeLayout>
 
-        <RelativeLayout
-            android:layout_width="fill_parent"
-            android:layout_height="230dp">
-
-            <TextView
-                android:id="@+id/reviewDetail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="20dp"/>
-
-        </RelativeLayout>
-
         <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="100dp"
+            android:layout_height="60dp"
             android:orientation="horizontal">
 
             <nl.hr.reviewable.CustomTextView
@@ -70,7 +63,7 @@
                 android:layout_height="fill_parent"
                 android:layout_weight="1"
                 android:id="@+id/ratingDetail"
-                android:textSize="50dp"
+                android:textSize="30dp"
                 android:paddingRight="10dp"
                 android:text="R"
                 android:background="@color/tab_lighter_gray"
@@ -104,6 +97,15 @@
                 reviewable:fontName="ProximaNova-Regular.otf" />
 
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/reviewDetail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Review"
+            android:textSize="14dp"
+            android:padding="10dp"/>
+
 
         <!--<TextView
             android:layout_width="wrap_content"

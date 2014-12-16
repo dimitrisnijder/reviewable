@@ -36,6 +36,7 @@ public class HomeActivity extends ListActivity {
     protected boolean flag_loading;
     protected ReviewAdapter adapter;
     protected View footerView;
+    protected int skipReviews = 0;
     protected int currentFirstVisibleItem = 0;
     protected int currentVisibleItemCount = 0;
     protected int currentTotalItemCount = 0;
@@ -65,7 +66,7 @@ public class HomeActivity extends ListActivity {
 
         Parse.initialize(this, "HS0km68yDCSvgftT2KILmFET7DFNESfH1rhVSmR2", "X4G5wb3DokD8aARe8lnLAk2HHDxdGTtsmhQQLw99");
 
-        getReviews(0);
+        getReviews();
 
         list = getListView();
         swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
@@ -79,7 +80,7 @@ public class HomeActivity extends ListActivity {
                 ( new Handler()).postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        getReviews(0);
+                        getReviews();
                         swipeLayout.setRefreshing(false);
                     }
                 }, 3000);
@@ -107,31 +108,38 @@ public class HomeActivity extends ListActivity {
                 if (currentVisibleItemCount > 0 && currentScrollState == SCROLL_STATE_IDLE && currentTotalItemCount == (currentFirstVisibleItem + currentVisibleItemCount)) {
                     if (!flag_loading) {
                         flag_loading = true;
-                        Log.d("reviewable", currentVisibleItemCount + "");
-                        getReviews(currentVisibleItemCount);
+                        skipReviews += currentVisibleItemCount;
+                        Log.d("reviewable", currentTotalItemCount + "");
+                        getReviews();
                     }
                 }
             }
         });
     }
 
-    public void getReviews(int position) {
+    public void getReviews() {
         Log.d("reviewable", "GETTING REVIEWS");
         ParseUser currentUser = ParseUser.getCurrentUser();
         if (currentUser != null) {
             // Show home screen with reviews
             ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Review");
             query.orderByDescending("createdAt");
-            query.setSkip(position);
+            query.setSkip(skipReviews);
             query.setLimit(reviewCount);
             query.findInBackground(new FindCallback<ParseObject>() {
                 @Override
                 public void done(List<ParseObject> parseObjects, com.parse.ParseException e) {
                     if (e == null) {
                         // Success : list of reviews
+                        if(parseObjects.size() == 0) {
+                            getListView().removeFooterView(footerView);
+                        }
+                        else {
+                            mReview.addAll(parseObjects);
+                            adapter.notifyDataSetChanged();
+                        }
 
-                        mReview.addAll(parseObjects);
-                        adapter.notifyDataSetChanged();
+                        flag_loading = false;
                     }
                     else {
                         // Oops
