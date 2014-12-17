@@ -8,4 +8,5 @@
     <color name="list_divider">#ff2b2b2b</color>
     <color name="tab_lighter_gray">#434343</color>
     <color name="green">#2ECD71</color>
+    <color name="red">#c0392b</color>
 </resources>

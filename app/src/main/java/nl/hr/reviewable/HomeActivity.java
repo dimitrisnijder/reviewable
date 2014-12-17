@@ -191,15 +191,4 @@ public class HomeActivity extends ListActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    protected void onListItemClick(ListView l, View v, int position, long id) {
-        super.onListItemClick(l, v, position, id);
-
-        ParseObject reviewObject = mReview.get(position);
-        String objectId = reviewObject.getObjectId();
-
-        Intent toDetailView = new Intent(HomeActivity.this, ReviewDetailView.class);
-        toDetailView.putExtra("objectID",objectId);
-        startActivity(toDetailView);
-    }
 }

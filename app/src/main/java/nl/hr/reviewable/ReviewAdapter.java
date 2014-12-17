@@ -30,6 +30,7 @@ public class ReviewAdapter extends ArrayAdapter<ParseObject> {
     protected Context mContext;
     protected List<ParseObject> mReview;
     protected ViewHolder holder;
+    protected ParseObject reviewObject;
 
     public ReviewAdapter (Context context, List<ParseObject> review) {
         super(context, R.layout.review_listitem, review);
@@ -58,13 +59,15 @@ public class ReviewAdapter extends ArrayAdapter<ParseObject> {
             holder.imageHomepage = (ParseImageView) convertView
                     .findViewById(R.id.imageHome);
 
+            holder.ratingHomepage = (TextView) convertView.findViewById(R.id.ratingHome);
+
             convertView.setTag(holder);
         }
         else {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        ParseObject reviewObject = mReview.get(position);
+        reviewObject = mReview.get(position);
 
         if(reviewObject != null) {
             // Username
@@ -75,9 +78,14 @@ public class ReviewAdapter extends ArrayAdapter<ParseObject> {
             String title = reviewObject.getString("userTitle");
             holder.titleHomepage.setText(title);
 
-//            // Review
-//            String review = reviewObject.getString("userReview");
-//            holder.reviewHomepage.setText(review);
+            // Rating
+            Boolean rating = reviewObject.getBoolean("userRating");
+            if(rating) {
+                holder.ratingHomepage.setTextColor(this.getContext().getResources().getColor(R.color.green));
+            }
+            else {
+                holder.ratingHomepage.setTextColor(this.getContext().getResources().getColor(R.color.red));
+            }
 
             // Tags
             String tags = reviewObject.getString("userTags");
@@ -96,7 +104,7 @@ public class ReviewAdapter extends ArrayAdapter<ParseObject> {
                 public void done(List<ParseObject> parseObjects, com.parse.ParseException e) {
                     if (e == null) {
                         // Success : total likes on review
-                        Log.d("lijstje", "opgehaald " + parseObjects.size());
+                        Log.d("lijstje", reviewObject.getString("userTitle") + " " + parseObjects.size());
 
                         holder.likesHome.setText(String.valueOf(parseObjects.size()));
                     }
@@ -160,6 +168,7 @@ public class ReviewAdapter extends ArrayAdapter<ParseObject> {
         TextView tagsHomepage;
         Button likesHome;
         ParseImageView imageHomepage;
+        TextView ratingHomepage;
     }
 
 }
