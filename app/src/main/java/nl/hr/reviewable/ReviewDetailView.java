@@ -71,6 +71,8 @@ public class ReviewDetailView extends Activity {
                     String userTitle = parseObject.getString("userTitle");
                     mTitle.setText(userTitle);
 
+                    getActionBar().setTitle(userTitle);
+
                     String userReview = parseObject.getString("userReview");
                     mReview.setText(userReview);
 
