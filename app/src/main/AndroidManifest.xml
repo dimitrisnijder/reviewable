@@ -26,24 +26,32 @@
         </activity>
         <activity
             android:name=".LoginActivity"
-            android:label="@string/title_activity_login" >
+            android:label="@string/title_activity_login"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation|screenSize">
         </activity>
         <activity
             android:name="nl.hr.reviewable.RegisterActivity"
             android:label="@string/title_activity_register"
             android:windowSoftInputMode="adjustResize"
-            android:parentActivityName="nl.hr.reviewable.LoginActivity" >
+            android:parentActivityName="nl.hr.reviewable.LoginActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation|screenSize">
         </activity>
         <activity
             android:name=".ReviewActivity"
             android:parentActivityName="nl.hr.reviewable.HomeActivity"
             android:windowSoftInputMode="adjustResize"
-            android:label="@string/title_activity_review" >
+            android:label="@string/title_activity_review"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation|screenSize">
         </activity>
         <activity
             android:name=".ReviewDetailView"
             android:parentActivityName="nl.hr.reviewable.HomeActivity"
-            android:label="@string/title_activity_review_detail_view" >
+            android:label="@string/title_activity_review_detail_view"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation|screenSize">
         </activity>
     </application>
 

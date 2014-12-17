@@ -103,7 +103,7 @@ public class ReviewActivity extends Activity {
                     ByteArrayOutputStream stream = new ByteArrayOutputStream();
 
                     // Compress image to lower quality
-                    //bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
                     byte[] image = stream.toByteArray();
 
                     // Generate random number for filename
@@ -135,7 +135,7 @@ public class ReviewActivity extends Activity {
                                 startActivity(goToHome);
                             } else {
                                 // Oops
-                                Log.d("reviEWABLE", e.getMessage());
+                                Log.d("Error on review", e.getMessage());
                             }
                         }
                     });
@@ -156,24 +156,6 @@ public class ReviewActivity extends Activity {
         // Is the toggle on?
         rating = ((ToggleButton) view).isChecked();
     }
-
-
-//    public void onRadioButtonClicked(View view) {
-//        // Is the button now checked?
-//        boolean checked = ((RadioButton) view).isChecked();
-//
-//        // Check which radio button was clicked
-//        switch(view.getId()) {
-//            case R.id.reviewRadioGood:
-//                if (checked)
-//                    // Good review
-//                    break;
-//            case R.id.reviewRadioBad:
-//                if (checked)
-//                    // Bad review
-//                    break;
-//        }
-//    }
 
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
