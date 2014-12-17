@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.parse.Parse;
@@ -34,6 +35,7 @@ public class ReviewActivity extends Activity {
     protected EditText reviewTitle;
     protected EditText reviewText;
     protected EditText reviewTags;
+    protected Button reviewRating;
 
     protected Button reviewButton;
     protected Bitmap bitmap;
@@ -48,7 +50,6 @@ public class ReviewActivity extends Activity {
         reviewTitle = (EditText)findViewById(R.id.reviewTitle);
         reviewText = (EditText)findViewById(R.id.reviewText);
         reviewTags = (EditText)findViewById(R.id.reviewTags);
-
         reviewButton = (Button)findViewById(R.id.reviewButton);
 
         cameraButton = (Button)findViewById(R.id.cameraButton);
@@ -66,6 +67,7 @@ public class ReviewActivity extends Activity {
                 String userTitle = reviewTitle.getText().toString();
                 String userReview = reviewText.getText().toString();
                 String userTags = reviewTags.getText().toString();
+
 
                 if (userTitle == "") {
                     // If review is empty
@@ -153,6 +155,23 @@ public class ReviewActivity extends Activity {
             }
         });
 
+    }
+
+    public void onRadioButtonClicked(View view) {
+        // Is the button now checked?
+        boolean checked = ((RadioButton) view).isChecked();
+
+        // Check which radio button was clicked
+        switch(view.getId()) {
+            case R.id.reviewRadioGood:
+                if (checked)
+                    // Good review
+                    break;
+            case R.id.reviewRadioBad:
+                if (checked)
+                    // Bad review
+                    break;
+        }
     }
 
     private void dispatchTakePictureIntent() {

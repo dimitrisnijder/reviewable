@@ -1,17 +1,23 @@
 package nl.hr.reviewable;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 
+import com.parse.FindCallback;
 import com.parse.GetDataCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseImageView;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import java.util.List;
 
@@ -45,6 +51,8 @@ public class ReviewAdapter extends ArrayAdapter<ParseObject> {
 //                    .findViewById(R.id.reviewHome);
             holder.tagsHomepage = (TextView) convertView
                     .findViewById(R.id.tagsHome);
+            holder.likesHome = (Button) convertView
+                    .findViewById(R.id.likesHome);
             holder.imageHomepage = (ParseImageView) convertView
                     .findViewById(R.id.imageHome);
 
@@ -73,6 +81,61 @@ public class ReviewAdapter extends ArrayAdapter<ParseObject> {
             String tags = reviewObject.getString("userTags");
             holder.tagsHomepage.setText(tags);
 
+            final String objectId = reviewObject.getObjectId();
+
+            // Get likes
+            ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Likes");
+            query.whereEqualTo("reviewId", objectId);
+            // likes.reviewId = review.objectId
+
+            query.orderByDescending("createdAt");
+            query.findInBackground(new FindCallback<ParseObject>() {
+                @Override
+                public void done(List<ParseObject> parseObjects, com.parse.ParseException e) {
+                    if (e == null) {
+                        // Success : list of reviews
+                        Log.d("lijstje", "opgehaald " + parseObjects.size());
+                        // Count parse objects
+                        holder.likesHome.setText(String.valueOf(parseObjects.size()));
+                    }
+                    else {
+                        // Oops
+                    }
+                }
+            });
+
+
+
+            // Let users like review
+            holder.likesHome.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    // Get user
+                    ParseUser currentUser = ParseUser.getCurrentUser();
+                    String currentUsername = currentUser.getUsername();
+
+                    // Likes test
+                    ParseObject likesObject = new ParseObject("Likes");
+                    likesObject.put("reviewId", objectId);
+                    likesObject.put("user", currentUsername);
+
+
+                    likesObject.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if (e == null) {
+                                //Toast likedMessage = Toast.makeText(ReviewDetailView.this, "Liked!", Toast.LENGTH_LONG);
+                                //likedMessage.show();
+                                Log.d("SUCCESS", "YES");
+                            } else {
+                                //Toast notLikedMessage = Toast.makeText(ReviewDetailView.this, "Something went wrong!", Toast.LENGTH_LONG);
+                                //notLikedMessage.show();
+                                Log.d("FAIL", "KUT");
+                            }
+                        }
+                    });
+                }
+            });
+
             // Image
             ParseFile image = reviewObject.getParseFile("userImageFile");
             holder.imageHomepage.setParseFile(image);
@@ -92,6 +155,7 @@ public class ReviewAdapter extends ArrayAdapter<ParseObject> {
         TextView titleHomepage;
         //TextView reviewHomepage;
         TextView tagsHomepage;
+        Button likesHome;
         ParseImageView imageHomepage;
     }
 

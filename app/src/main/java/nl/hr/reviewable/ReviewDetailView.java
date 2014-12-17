@@ -3,10 +3,14 @@ package nl.hr.reviewable;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ShareActionProvider;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.parse.GetCallback;
 import com.parse.GetDataCallback;
@@ -15,6 +19,8 @@ import com.parse.ParseFile;
 import com.parse.ParseImageView;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 
 public class ReviewDetailView extends Activity {
@@ -28,6 +34,8 @@ public class ReviewDetailView extends Activity {
     protected TextView mLikes;
     protected ParseImageView mImage;
 
+    protected Button mLikeButton;
+
     private ShareActionProvider mShareActionProvider;
 
     @Override
@@ -40,8 +48,11 @@ public class ReviewDetailView extends Activity {
         mReview = (TextView)findViewById(R.id.reviewDetail);
         mTags = (TextView)findViewById(R.id.tagsDetail);
         mRating = (TextView)findViewById(R.id.ratingDetail);
-        mLikes = (TextView)findViewById(R.id.likesDetail);
+        //mLikes = (TextView)findViewById(R.id.likesDetail);
         mImage = (ParseImageView)findViewById(R.id.imageDetail);
+
+        mLikeButton = (Button)findViewById(R.id.likeButton);
+
 
         // Intent
         Intent intent = getIntent();
@@ -86,6 +97,36 @@ public class ReviewDetailView extends Activity {
                 else {
                     // Oops
                 }
+            }
+        });
+
+        // Let users like review
+        mLikeButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // Get user
+                ParseUser currentUser = ParseUser.getCurrentUser();
+                String currentUsername = currentUser.getUsername();
+
+                // Likes test
+                ParseObject likesObject = new ParseObject("Likes");
+                likesObject.put("reviewId", objectId);
+                likesObject.put("user", currentUsername);
+                likesObject.saveInBackground(new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        if (e == null) {
+                            Toast likedMessage = Toast.makeText(ReviewDetailView.this, "Liked!", Toast.LENGTH_LONG);
+                            likedMessage.show();
+                            Log.d("SUCCESS", "YES");
+                        //} else if () {
+                            // if user already liked
+                        } else {
+                            Toast notLikedMessage = Toast.makeText(ReviewDetailView.this, "Something went wrong!", Toast.LENGTH_LONG);
+                            notLikedMessage.show();
+                            Log.d("FAIL", "KUT");
+                        }
+                    }
+                });
             }
         });
     }

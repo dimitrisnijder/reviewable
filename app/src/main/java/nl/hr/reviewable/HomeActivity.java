@@ -6,6 +6,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -89,6 +90,8 @@ public class HomeActivity extends ListActivity {
                 public void done(List<ParseObject> parseObjects, com.parse.ParseException e) {
                     if (e == null) {
                         // Success : list of reviews
+
+                        Log.d("found it", "yeah");
 
                         mReview = parseObjects;
                         ReviewAdapter adapter = new ReviewAdapter(getListView().getContext(), mReview);

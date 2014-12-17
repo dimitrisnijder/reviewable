@@ -50,7 +50,7 @@
 
         <RelativeLayout
             android:layout_width="fill_parent"
-            android:layout_height="230dp">
+            android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/reviewDetail"
@@ -91,14 +91,14 @@
                 android:textAllCaps="true"
                 reviewable:fontName="ProximaNova-Regular.otf" />
 
-            <nl.hr.reviewable.CustomTextView
+            <nl.hr.reviewable.CustomButton
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
                 android:layout_weight="1"
-                android:id="@+id/likesDetail"
+                android:id="@+id/likeButton"
                 android:textSize="12dp"
                 android:text="Likes"
-                android:background="@color/tab_lighter_gray"
+                android:background="@color/blue"
                 android:gravity="center"
                 android:textColor="@color/white"
                 reviewable:fontName="ProximaNova-Regular.otf" />
