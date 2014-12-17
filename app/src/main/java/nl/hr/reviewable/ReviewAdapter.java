@@ -59,6 +59,8 @@ public class ReviewAdapter extends ArrayAdapter<ParseObject> {
             holder.imageHomepage = (ParseImageView) convertView
                     .findViewById(R.id.imageHome);
 
+            holder.ratingHomepage = (TextView) convertView.findViewById(R.id.ratingHome);
+
             convertView.setTag(holder);
         }
         else {
@@ -76,9 +78,14 @@ public class ReviewAdapter extends ArrayAdapter<ParseObject> {
             String title = reviewObject.getString("userTitle");
             holder.titleHomepage.setText(title);
 
-//            // Review
-//            String review = reviewObject.getString("userReview");
-//            holder.reviewHomepage.setText(review);
+            // Rating
+            Boolean rating = reviewObject.getBoolean("userRating");
+            if(rating) {
+                holder.ratingHomepage.setTextColor(this.getContext().getResources().getColor(R.color.green));
+            }
+            else {
+                holder.ratingHomepage.setTextColor(this.getContext().getResources().getColor(R.color.red));
+            }
 
             // Tags
             String tags = reviewObject.getString("userTags");
@@ -161,6 +168,7 @@ public class ReviewAdapter extends ArrayAdapter<ParseObject> {
         TextView tagsHomepage;
         Button likesHome;
         ParseImageView imageHomepage;
+        TextView ratingHomepage;
     }
 
 }
