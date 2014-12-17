@@ -7,14 +7,15 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RadioButton;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.parse.Parse;
 import com.parse.ParseException;
@@ -35,7 +36,9 @@ public class ReviewActivity extends Activity {
     protected EditText reviewTitle;
     protected EditText reviewText;
     protected EditText reviewTags;
-    protected Button reviewRating;
+    //protected Button reviewRating;
+    protected ToggleButton reviewRating;
+    protected Boolean rating = false;
 
     protected Button reviewButton;
     protected Bitmap bitmap;
@@ -51,7 +54,7 @@ public class ReviewActivity extends Activity {
         reviewText = (EditText)findViewById(R.id.reviewText);
         reviewTags = (EditText)findViewById(R.id.reviewTags);
         reviewButton = (Button)findViewById(R.id.reviewButton);
-
+        reviewRating = (ToggleButton)findViewById(R.id.reviewRating);
         cameraButton = (Button)findViewById(R.id.cameraButton);
         imageView = (ImageView)findViewById(R.id.mImageView);
 
@@ -67,7 +70,7 @@ public class ReviewActivity extends Activity {
                 String userTitle = reviewTitle.getText().toString();
                 String userReview = reviewText.getText().toString();
                 String userTags = reviewTags.getText().toString();
-
+                Boolean userRating = rating;
 
                 if (userTitle == "") {
                     // If review is empty
@@ -100,7 +103,7 @@ public class ReviewActivity extends Activity {
                     ByteArrayOutputStream stream = new ByteArrayOutputStream();
 
                     // Compress image to lower quality
-                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                    //bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
                     byte[] image = stream.toByteArray();
 
                     // Generate random number for filename
@@ -116,6 +119,7 @@ public class ReviewActivity extends Activity {
                     reviewObject.put("userReview", userReview);
                     reviewObject.put("userTags", userTags);
                     reviewObject.put("user", currentUsername);
+                    reviewObject.put("userRating", userRating);
 
                     reviewObject.put("userImageFile", file);
 
@@ -131,16 +135,7 @@ public class ReviewActivity extends Activity {
                                 startActivity(goToHome);
                             } else {
                                 // Oops
-                                AlertDialog.Builder builder = new AlertDialog.Builder(ReviewActivity.this);
-                                builder.setMessage("Login failed")
-                                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                            public void onClick(DialogInterface dialog, int id) {
-                                                dialog.dismiss();
-                                            }
-                                        });
-                                // Create the AlertDialog object and return it
-                                AlertDialog dialog = builder.create();
-                                dialog.show();
+                                Log.d("reviEWABLE", e.getMessage());
                             }
                         }
                     });
@@ -157,22 +152,28 @@ public class ReviewActivity extends Activity {
 
     }
 
-    public void onRadioButtonClicked(View view) {
-        // Is the button now checked?
-        boolean checked = ((RadioButton) view).isChecked();
-
-        // Check which radio button was clicked
-        switch(view.getId()) {
-            case R.id.reviewRadioGood:
-                if (checked)
-                    // Good review
-                    break;
-            case R.id.reviewRadioBad:
-                if (checked)
-                    // Bad review
-                    break;
-        }
+    public void onToggleClicked(View view) {
+        // Is the toggle on?
+        rating = ((ToggleButton) view).isChecked();
     }
+
+
+//    public void onRadioButtonClicked(View view) {
+//        // Is the button now checked?
+//        boolean checked = ((RadioButton) view).isChecked();
+//
+//        // Check which radio button was clicked
+//        switch(view.getId()) {
+//            case R.id.reviewRadioGood:
+//                if (checked)
+//                    // Good review
+//                    break;
+//            case R.id.reviewRadioBad:
+//                if (checked)
+//                    // Bad review
+//                    break;
+//        }
+//    }
 
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);

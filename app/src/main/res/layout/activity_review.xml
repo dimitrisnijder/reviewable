@@ -46,7 +46,15 @@
             android:layout_height="wrap_content"
             android:id="@+id/mImageView"/>
 
-        <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+        <ToggleButton
+            android:id="@+id/reviewRating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textOn="Swag on"
+            android:textOff="Swag off"
+            android:onClick="onToggleClicked"/>
+
+        <!--<RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -60,7 +68,7 @@
                 android:layout_height="wrap_content"
                 android:text="Bad"
                 android:onClick="onRadioButtonClicked"/>
-        </RadioGroup>
+        </RadioGroup>-->
 
         <nl.hr.reviewable.CustomButton
             android:layout_width="match_parent"

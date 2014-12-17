@@ -198,8 +198,6 @@ public class HomeActivity extends ListActivity {
         ParseObject reviewObject = mReview.get(position);
         String objectId = reviewObject.getObjectId();
 
-        Log.d("koekie", "woekie");
-
         Intent toDetailView = new Intent(HomeActivity.this, ReviewDetailView.class);
         toDetailView.putExtra("objectID",objectId);
         startActivity(toDetailView);
