@@ -98,13 +98,14 @@
 
         </LinearLayout>
 
-        <TextView
+        <nl.hr.reviewable.CustomTextView
             android:id="@+id/reviewDetail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Review"
-            android:textSize="14dp"
-            android:padding="10dp"/>
+            android:textSize="16dp"
+            android:padding="10dp"
+            reviewable:fontName="ProximaNova-Regular.otf" />
 
 
         <!--<TextView

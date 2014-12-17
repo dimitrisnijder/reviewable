@@ -32,10 +32,19 @@ public class ReviewAdapter extends ArrayAdapter<ParseObject> {
     protected ViewHolder holder;
     protected ParseObject reviewObject;
 
+    protected ParseUser currentUser;
+    protected String currentUsername;
+
+    protected List<ParseObject> userLikes;
+
+    protected Boolean userLiked = false;
+
     public ReviewAdapter (Context context, List<ParseObject> review) {
         super(context, R.layout.review_listitem, review);
         mContext = context;
         mReview = review;
+
+
     }
 
     @Override
@@ -114,29 +123,73 @@ public class ReviewAdapter extends ArrayAdapter<ParseObject> {
                 }
             });
 
+            // Get user
+            currentUser = ParseUser.getCurrentUser();
+            currentUsername = currentUser.getUsername();
+
+            // Check if users liked
+            ParseQuery<ParseObject> queryLike = new ParseQuery<ParseObject>("Likes");
+            queryLike.whereEqualTo("reviewId", objectId);
+            queryLike.whereEqualTo("user", currentUsername);
+
+            queryLike.orderByDescending("createdAt");
+            queryLike.findInBackground(new FindCallback<ParseObject>() {
+                @Override
+                public void done(List<ParseObject> parseObjects, com.parse.ParseException e) {
+                    if (e == null) {
+                        userLikes = parseObjects;
+                        if (parseObjects.size() >= 1) {
+                            Log.d("Groter dan 1", "snapje" + reviewObject.getString("userTitle") + " " + parseObjects.size());
+
+                            userLiked = true;
+                        }
+                        else {
+                            Log.d("KLEINER dan 1", "snapje" + reviewObject.getString("userTitle") + " " + parseObjects.size());
+
+                            userLiked = false;
+                        }
+                    }
+                    else {
+                        // Oops
+                    }
+                }
+            });
+
+
             // Let users like review
             holder.likesHome.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    // Get user
-                    ParseUser currentUser = ParseUser.getCurrentUser();
-                    String currentUsername = currentUser.getUsername();
 
-                    // Likes test
                     ParseObject likesObject = new ParseObject("Likes");
-                    likesObject.put("reviewId", objectId);
-                    likesObject.put("user", currentUsername);
 
+                    if (userLiked == false) {
 
-                    likesObject.saveInBackground(new SaveCallback() {
-                        @Override
-                        public void done(ParseException e) {
-                            if (e == null) {
-                                Log.d("SUCCESS", "YES");
-                            } else {
-                                Log.d("FAIL", "KUT");
+                        // Likes test
+
+                        likesObject.put("reviewId", objectId);
+                        likesObject.put("user", currentUsername);
+
+                        // check if reviewId == objectId
+                        // If so: zit je username erbij
+
+                        likesObject.saveInBackground(new SaveCallback() {
+                            @Override
+                            public void done(ParseException e) {
+                                if (e == null) {
+                                    Log.d("SUCCESS", "YES");
+                                } else {
+                                    Log.d("FAIL", "KUT");
+                                }
                             }
+                        });
+
+                    }
+                    else {
+                        //ParseObject likesObject = new ParseObject("Likes");
+                        for(ParseObject l : userLikes) {
+                            l.deleteInBackground();
                         }
-                    });
+                    }
                 }
             });
 
