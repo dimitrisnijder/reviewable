@@ -1,12 +1,14 @@
 package nl.hr.reviewable;
 
 import android.app.ListActivity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -48,8 +50,8 @@ public class HomeActivity extends ListActivity {
 
         reviewCount = 3;
 
-        //footerView = ((LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.review_list_footer, null, false);
-        //getListView().addFooterView(footerView);
+        footerView = ((LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.review_list_footer, null, false);
+        getListView().addFooterView(footerView);
 
         mReview = new ArrayList<ParseObject>();
         adapter = new ReviewAdapter(getListView().getContext(), mReview);
