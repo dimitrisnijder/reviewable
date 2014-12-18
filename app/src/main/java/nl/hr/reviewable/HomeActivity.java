@@ -109,7 +109,7 @@ public class HomeActivity extends ListActivity {
                     if (!flag_loading) {
                         flag_loading = true;
                         skipReviews += currentVisibleItemCount;
-                        Log.d("reviewable", currentTotalItemCount + "");
+                        Log.d("reviewable", currentVisibleItemCount + "");
                         getReviews();
                     }
                 }
@@ -135,8 +135,10 @@ public class HomeActivity extends ListActivity {
                             getListView().removeFooterView(footerView);
                         }
                         else {
+                            Log.d("get reviews current", mReview.toString());
                             mReview.addAll(parseObjects);
                             adapter.notifyDataSetChanged();
+                            Log.d("get reviews added", mReview.toString());
                         }
 
                         flag_loading = false;

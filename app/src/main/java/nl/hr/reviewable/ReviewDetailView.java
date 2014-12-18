@@ -12,6 +12,8 @@ import android.widget.ShareActionProvider;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.CountCallback;
+import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.GetDataCallback;
 import com.parse.ParseException;
@@ -19,8 +21,11 @@ import com.parse.ParseFile;
 import com.parse.ParseImageView;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseRelation;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
+
+import java.util.List;
 
 
 public class ReviewDetailView extends Activity {
@@ -33,6 +38,11 @@ public class ReviewDetailView extends Activity {
     protected TextView mRating;
     protected TextView mLikes;
     protected ParseImageView mImage;
+
+    protected ParseUser currentUser;
+    protected Boolean userLiked;
+
+    public ParseObject review;
 
     protected Button mLikeButton;
 
@@ -48,7 +58,7 @@ public class ReviewDetailView extends Activity {
         mReview = (TextView)findViewById(R.id.reviewDetail);
         mTags = (TextView)findViewById(R.id.tagsDetail);
         mRating = (TextView)findViewById(R.id.ratingDetail);
-        //mLikes = (TextView)findViewById(R.id.likesDetail);
+        mLikes = (TextView)findViewById(R.id.likeButton);
         mImage = (ParseImageView)findViewById(R.id.imageDetail);
 
         mLikeButton = (Button)findViewById(R.id.likeButton);
@@ -64,35 +74,129 @@ public class ReviewDetailView extends Activity {
             public void done(ParseObject parseObject, ParseException e) {
                 if (e == null) {
                     // Success -> Status
+                    review = parseObject;
 
-                    String userName = parseObject.getString("user");
+                    String userName = review.getString("user");
                     mUser.setText(userName);
 
-                    String userTitle = parseObject.getString("userTitle");
+                    String userTitle = review.getString("userTitle");
                     mTitle.setText(userTitle);
 
                     getActionBar().setTitle(userTitle);
 
-                    String userReview = parseObject.getString("userReview");
+                    String userReview = review.getString("userReview");
                     mReview.setText(userReview);
 
-                    String userTags = parseObject.getString("userTags");
+                    String userTags = review.getString("userTags");
                     mTags.setText(userTags);
 
-                    // Nog aangemaakt worden in Parse
-                    //String userRating = parseObject.getString();
-                    //mRating.setText(userRating);
+                    // Rating
+                    Boolean rating = review.getBoolean("userRating");
+                    if(rating) {
+                        mRating.setTextColor(getResources().getColor(R.color.green));
+                    }
+                    else {
+                        mRating.setTextColor(getResources().getColor(R.color.red));
+                    }
 
-                    // Nog aangemaakt worden in Parse
-                    //String userLikes = parseObject.getString();
-                    //mLikes.setText(userLikes);
-
-                    ParseFile userImage = parseObject.getParseFile("userImageFile");
+                    ParseFile userImage = review.getParseFile("userImageFile");
                     mImage.setParseFile(userImage);
 
                     mImage.loadInBackground(new GetDataCallback() {
                         public void done(byte[] data, ParseException e) {
                             // The image is loaded and displayed!
+                        }
+                    });
+
+                    // Count likes
+                    ParseQuery<ParseObject> likesQuery = ParseQuery.getQuery("Likes");
+                    likesQuery.whereEqualTo("review", review);
+
+                    likesQuery.countInBackground(new CountCallback() {
+                        public void done(int count, ParseException e) {
+                            if (e == null) {
+                                mLikes.setText(String.valueOf(count));
+                                Log.d("likes count", "Set likes count: " + count);
+                            } else {
+                                Log.d("likes", e.getMessage());
+                            }
+                        }
+                    });
+
+                    // Check if users liked
+                    currentUser = ParseUser.getCurrentUser();
+
+                    ParseQuery<ParseObject> userLikesQuery = ParseQuery.getQuery("Likes");
+                    userLikesQuery.whereEqualTo("review", review);
+                    userLikesQuery.whereEqualTo("user", currentUser);
+
+                    userLikesQuery.findInBackground(new FindCallback<ParseObject>() {
+                        public void done(List<ParseObject> userLikesList, ParseException e) {
+                            if (e == null) {
+
+                                if (userLikesList.size() >= 1) {
+                                    userLiked = true;
+                                    mLikes.setBackgroundColor(getResources().getColor(R.color.blue));
+                                }
+                                else {
+                                    userLiked = false;
+                                    mLikes.setBackgroundColor(getResources().getColor(R.color.tab_lighter_gray));
+                                }
+                            }
+                            else {
+                                // Oops
+                            }
+                        }
+                    });
+
+                    Log.d("reviewable", "Did I like? " + review.getString("userTitle") + " " + userLiked);
+
+                    // Let users like review
+                    mLikes.setOnClickListener(new View.OnClickListener() {
+                        public void onClick(View v) {
+
+                            if (userLiked == false) {
+
+                                Log.d("reviewable", "CLICKED! Delete or add? " + review.getString("userTitle") + " " + userLiked);
+
+                                ParseObject likesObject = new ParseObject("Likes");
+
+                                ParseRelation userRelation = likesObject.getRelation("user");
+                                userRelation.add(currentUser);
+
+                                ParseRelation reviewRelation = likesObject.getRelation("review");
+                                reviewRelation.add(review);
+
+                                likesObject.saveInBackground(new SaveCallback() {
+                                    @Override
+                                    public void done(ParseException e) {
+                                        if (e == null) {
+
+                                        } else {
+                                            Log.d("add like", e.getMessage());
+                                        }
+                                    }
+                                });
+
+                            }
+                            else {
+                                ParseQuery<ParseObject> userLikesQuery = ParseQuery.getQuery("Likes");
+                                userLikesQuery.whereEqualTo("review", review);
+                                userLikesQuery.whereEqualTo("user", currentUser);
+
+                                userLikesQuery.findInBackground(new FindCallback<ParseObject>() {
+                                    public void done(List<ParseObject> userLikesList, ParseException e) {
+                                        if (e == null) {
+                                            for(ParseObject l : userLikesList) {
+                                                l.deleteInBackground();
+                                            }
+                                        }
+                                        else {
+                                            Log.d("delete like", e.getMessage());
+                                        }
+                                    }
+                                });
+                            }
                         }
                     });
                 }
