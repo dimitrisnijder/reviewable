@@ -151,6 +151,7 @@ public class HomeActivity extends ListActivity {
             // Go to login screen
             Intent goToLogin = new Intent(HomeActivity.this, LoginActivity.class);
             startActivity(goToLogin);
+            this.finish();
         }
     }
 

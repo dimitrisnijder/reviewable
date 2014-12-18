@@ -17,6 +17,7 @@ import com.parse.ParseFile;
 import com.parse.ParseImageView;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseRelation;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
@@ -79,6 +80,8 @@ public class ReviewAdapter extends ArrayAdapter<ParseObject> {
         reviewObject = mReview.get(position);
 
         if(reviewObject != null) {
+
+
             // Username
             String username = reviewObject.getString("user");
             holder.usernameHomepage.setText(username);
@@ -90,10 +93,10 @@ public class ReviewAdapter extends ArrayAdapter<ParseObject> {
             // Rating
             Boolean rating = reviewObject.getBoolean("userRating");
             if(rating) {
-                holder.ratingHomepage.setTextColor(this.getContext().getResources().getColor(R.color.green));
+                holder.ratingHomepage.setTextColor(mContext.getResources().getColor(R.color.green));
             }
             else {
-                holder.ratingHomepage.setTextColor(this.getContext().getResources().getColor(R.color.red));
+                holder.ratingHomepage.setTextColor(mContext.getResources().getColor(R.color.red));
             }
 
             // Tags
@@ -101,91 +104,133 @@ public class ReviewAdapter extends ArrayAdapter<ParseObject> {
             String tagLines = tags.replaceAll(",", "\n");
             holder.tagsHomepage.setText(tagLines);
 
-            final String objectId = reviewObject.getObjectId();
+            Log.d("reviewable", reviewObject.getString("userTitle") + "loaded");
 
-            // Get likes
-            ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Likes");
-            query.whereEqualTo("reviewId", objectId);
+            ParseQuery<ParseObject> likesQuery = ParseQuery.getQuery("Likes");
+            likesQuery.whereEqualTo("review", reviewObject);
 
-            query.orderByDescending("createdAt");
-            query.findInBackground(new FindCallback<ParseObject>() {
-                @Override
-                public void done(List<ParseObject> parseObjects, com.parse.ParseException e) {
+            likesQuery.findInBackground(new FindCallback<ParseObject>() {
+                public void done(List<ParseObject> likesList, ParseException e) {
                     if (e == null) {
                         // Success : total likes on review
-                        Log.d("lijstje", reviewObject.getString("userTitle") + " " + parseObjects.size());
+                        Log.d("reviewable", reviewObject.getString("userTitle") + " " + likesList.size());
 
-                        holder.likesHome.setText(String.valueOf(parseObjects.size()));
+                        holder.likesHome.setText(String.valueOf(likesList.size()));
                     }
                     else {
-                        // Oops
+                        Log.d("likes", e.getMessage());
                     }
                 }
             });
 
-            // Get user
-            currentUser = ParseUser.getCurrentUser();
-            currentUsername = currentUser.getUsername();
+
+//            // Get likes
+//            ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Likes");
+//            query.whereEqualTo("reviewId", objectId);
+//
+//            query.orderByDescending("createdAt");
+//            query.findInBackground(new FindCallback<ParseObject>() {
+//                @Override
+//                public void done(List<ParseObject> parseObjects, com.parse.ParseException e) {
+//                    if (e == null) {
+//                        // Success : total likes on review
+//                        Log.d("reviewable", reviewObject.getString("userTitle") + " " + parseObjects.size());
+//
+//                        holder.likesHome.setText(String.valueOf(parseObjects.size()));
+//                    }
+//                    else {
+//                        Log.d("likes", e.getMessage());
+//                    }
+//                }
+//            });
 
             // Check if users liked
-            ParseQuery<ParseObject> queryLike = new ParseQuery<ParseObject>("Likes");
-            queryLike.whereEqualTo("reviewId", objectId);
-            queryLike.whereEqualTo("user", currentUsername);
+            currentUser = ParseUser.getCurrentUser();
 
-            queryLike.orderByDescending("createdAt");
-            queryLike.findInBackground(new FindCallback<ParseObject>() {
-                @Override
-                public void done(List<ParseObject> parseObjects, com.parse.ParseException e) {
+            ParseQuery<ParseObject> userLikesQuery = ParseQuery.getQuery("Likes");
+            userLikesQuery.whereEqualTo("review", reviewObject);
+            userLikesQuery.whereEqualTo("user", currentUser);
+
+            userLikesQuery.findInBackground(new FindCallback<ParseObject>() {
+                public void done(List<ParseObject> userLikesList, ParseException e) {
                     if (e == null) {
-                        userLikes = parseObjects;
-                        if (parseObjects.size() >= 1) {
-                            Log.d("Groter dan 1", "snapje" + reviewObject.getString("userTitle") + " " + parseObjects.size());
-
+                        userLikes = userLikesList;
+                        if (userLikesList.size() >= 1) {
                             userLiked = true;
+                            holder.likesHome.setBackgroundColor(mContext.getResources().getColor(R.color.blue));
                         }
                         else {
-                            Log.d("KLEINER dan 1", "snapje" + reviewObject.getString("userTitle") + " " + parseObjects.size());
-
                             userLiked = false;
+                            holder.likesHome.setBackgroundColor(mContext.getResources().getColor(R.color.tab_lighter_gray));
                         }
+
+                        Log.d("reviewable", reviewObject.getString("userTitle") + " " + userLiked);
                     }
                     else {
                         // Oops
                     }
                 }
             });
+
+//            // Check if users liked
+//            ParseQuery<ParseObject> queryLike = new ParseQuery<ParseObject>("Likes");
+//            queryLike.whereEqualTo("reviewId", objectId);
+//            queryLike.whereEqualTo("user", currentUsername);
+//
+//            queryLike.orderByDescending("createdAt");
+//            queryLike.findInBackground(new FindCallback<ParseObject>() {
+//                @Override
+//                public void done(List<ParseObject> parseObjects, com.parse.ParseException e) {
+//                    if (e == null) {
+//
+//                        userLikes = parseObjects;
+//                        if (parseObjects.size() >= 1) {
+//                            userLiked = true;
+//                            holder.likesHome.setBackgroundColor(mContext.getResources().getColor(R.color.blue));
+//                        }
+//                        else {
+//                            userLiked = false;
+//                            holder.likesHome.setBackgroundColor(mContext.getResources().getColor(R.color.tab_lighter_gray));
+//                        }
+//
+//                        Log.d("reviewable", reviewObject.getString("userTitle") + " " + userLiked);
+//                    }
+//                    else {
+//                        // Oops
+//                    }
+//                }
+//            });
 
 
             // Let users like review
             holder.likesHome.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
 
-                    ParseObject likesObject = new ParseObject("Likes");
+                    Log.d("reviewable", "Delete or add? " + reviewObject.getString("userTitle") + " " + userLiked);
 
                     if (userLiked == false) {
 
-                        // Likes test
+                        ParseObject likesObject = new ParseObject("Likes");
 
-                        likesObject.put("reviewId", objectId);
-                        likesObject.put("user", currentUsername);
+                        ParseRelation userRelation = likesObject.getRelation("user");
+                        userRelation.add(currentUser);
 
-                        // check if reviewId == objectId
-                        // If so: zit je username erbij
+                        ParseRelation reviewRelation = likesObject.getRelation("review");
+                        reviewRelation.add(reviewObject);
 
                         likesObject.saveInBackground(new SaveCallback() {
                             @Override
                             public void done(ParseException e) {
                                 if (e == null) {
-                                    Log.d("SUCCESS", "YES");
+
                                 } else {
-                                    Log.d("FAIL", "KUT");
+                                    Log.d("add like", e.getMessage());
                                 }
                             }
                         });
 
                     }
-                    else {
-                        //ParseObject likesObject = new ParseObject("Likes");
+                    else if(userLiked == true) {
                         for(ParseObject l : userLikes) {
                             l.deleteInBackground();
                         }
@@ -196,7 +241,7 @@ public class ReviewAdapter extends ArrayAdapter<ParseObject> {
             holder.imageHomepage.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     Intent toDetailView = new Intent(v.getContext(), ReviewDetailView.class);
-                    toDetailView.putExtra("objectID",objectId);
+                    toDetailView.putExtra("objectID", reviewObject.getObjectId());
                     v.getContext().startActivity(toDetailView);
                 }
             });
