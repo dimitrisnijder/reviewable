@@ -196,6 +196,7 @@ public class ReviewDetailView extends Activity {
                                         }
                                     }
                                 });
+                                //refresh likes
                             }
                         }
                     });
