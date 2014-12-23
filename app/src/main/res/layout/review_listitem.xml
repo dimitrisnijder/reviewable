@@ -63,11 +63,12 @@
             android:id="@+id/ratingHome"
             android:textSize="42dp"
             android:paddingRight="10dp"
-            android:text="R"
-            android:background="@color/tab_lighter_gray"
             android:gravity="center"
+            android:background="@drawable/review_good"/>
+            <!--android:text="R"
+            android:background="@color/tab_lighter_gray"
             android:textColor="@color/green"
-            reviewable:fontName="Pacifico.ttf" />
+            reviewable:fontName="Pacifico.ttf" />-->
 
         <nl.hr.reviewable.CustomTextView
             android:layout_width="0dp"

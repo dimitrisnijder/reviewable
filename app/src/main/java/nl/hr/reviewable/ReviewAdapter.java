@@ -105,10 +105,11 @@ public class ReviewAdapter extends BaseAdapter {
             // Rating
             Boolean rating = mReview.get(position).getBoolean("userRating");
             if(rating) {
-                holder.ratingHomepage.setTextColor(mContext.getResources().getColor(R.color.green));
+                //holder.ratingHomepage.setTextColor(mContext.getResources().getColor(R.color.green));
             }
             else {
-                holder.ratingHomepage.setTextColor(mContext.getResources().getColor(R.color.red));
+                //holder.ratingHomepage.setTextColor(mContext.getResources().getColor(R.color.red));
+                holder.ratingHomepage.setBackground(mContext.getResources().getDrawable(R.drawable.review_bad));
             }
 
             // Tags
