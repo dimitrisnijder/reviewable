@@ -55,7 +55,7 @@
 
         <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="60dp"
+            android:layout_height="80dp"
             android:orientation="horizontal">
 
             <nl.hr.reviewable.CustomTextView
@@ -63,13 +63,8 @@
                 android:layout_height="fill_parent"
                 android:layout_weight="1"
                 android:id="@+id/ratingDetail"
-                android:textSize="30dp"
-                android:paddingRight="10dp"
-                android:text="R"
-                android:background="@color/tab_lighter_gray"
-                android:gravity="center"
-                android:textColor="@color/green"
-                reviewable:fontName="Pacifico.ttf" />
+                android:background="@drawable/review_good"
+                android:gravity="center"/>
 
             <nl.hr.reviewable.CustomTextView
                 android:layout_width="0dp"
@@ -90,11 +85,11 @@
                 android:layout_weight="1"
                 android:id="@+id/likeButton"
                 android:textSize="12dp"
-                android:text="Likes"
-                android:background="@color/blue"
+                android:text="0"
+                android:background="@drawable/heart_light"
                 android:gravity="center"
-                android:textColor="@color/white"
-                reviewable:fontName="ProximaNova-Regular.otf" />
+                android:textColor="@color/blue"
+                reviewable:fontName="ProximaNova-Regular.otf"  />
 
         </LinearLayout>
 

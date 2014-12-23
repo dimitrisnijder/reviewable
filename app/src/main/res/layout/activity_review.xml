@@ -11,6 +11,20 @@
         android:paddingBottom="@dimen/activity_vertical_margin"
         android:orientation="vertical">
 
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/mImageView"/>
+
+        <nl.hr.reviewable.CustomButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/cameraButton"
+            android:text="@string/take_photo"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"
+            reviewable:buttonFontName="ProximaNova-Regular.otf" />
+
         <nl.hr.reviewable.CustomEditText
             android:id="@+id/reviewTitle"
             android:layout_width="match_parent"
@@ -41,29 +55,15 @@
             android:layout_marginBottom="10dp"
             android:gravity="top"/>
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/mImageView"/>
-
         <ToggleButton
             android:id="@+id/reviewRating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textOn="Swag on"
-            android:textOff="Swag off"
+            android:textOn="Reviewlarious!"
+            android:textOff="Reviewatic..."
             android:onClick="onToggleClicked"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="10dp" />
-
-        <nl.hr.reviewable.CustomButton
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/cameraButton"
-            android:text="@string/take_photo"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="10dp"
-            reviewable:buttonFontName="ProximaNova-Regular.otf" />
 
         <nl.hr.reviewable.CustomButton
             android:id="@+id/reviewButton"

@@ -7,7 +7,6 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -48,7 +47,7 @@ public class HomeActivity extends ListActivity {
         setContentView(R.layout.activity_home);
         getActionBar().setDisplayShowHomeEnabled(false);
 
-        reviewCount = 3;
+        reviewCount = 6;
 
         footerView = ((LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.review_list_footer, null, false);
         getListView().addFooterView(footerView);
@@ -109,7 +108,6 @@ public class HomeActivity extends ListActivity {
                     if (!flag_loading) {
                         flag_loading = true;
                         skipReviews += currentVisibleItemCount;
-                        Log.d("reviewable", currentVisibleItemCount + "");
                         getReviews();
                     }
                 }
@@ -118,7 +116,7 @@ public class HomeActivity extends ListActivity {
     }
 
     public void getReviews() {
-        Log.d("reviewable", "GETTING REVIEWS");
+
         ParseUser currentUser = ParseUser.getCurrentUser();
         if (currentUser != null) {
             // Show home screen with reviews
@@ -135,10 +133,8 @@ public class HomeActivity extends ListActivity {
                             getListView().removeFooterView(footerView);
                         }
                         else {
-                            Log.d("get reviews current", mReview.toString());
                             mReview.addAll(parseObjects);
                             adapter.notifyDataSetChanged();
-                            Log.d("get reviews added", mReview.toString());
                         }
 
                         flag_loading = false;

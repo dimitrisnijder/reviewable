@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ShareActionProvider;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.parse.CountCallback;
 import com.parse.FindCallback;
@@ -36,7 +35,6 @@ public class ReviewDetailView extends Activity {
     protected TextView mReview;
     protected TextView mTags;
     protected TextView mRating;
-    protected TextView mLikes;
     protected ParseImageView mImage;
 
     protected ParseUser currentUser;
@@ -58,7 +56,6 @@ public class ReviewDetailView extends Activity {
         mReview = (TextView)findViewById(R.id.reviewDetail);
         mTags = (TextView)findViewById(R.id.tagsDetail);
         mRating = (TextView)findViewById(R.id.ratingDetail);
-        mLikes = (TextView)findViewById(R.id.likeButton);
         mImage = (ParseImageView)findViewById(R.id.imageDetail);
 
         mLikeButton = (Button)findViewById(R.id.likeButton);
@@ -115,8 +112,7 @@ public class ReviewDetailView extends Activity {
                     likesQuery.countInBackground(new CountCallback() {
                         public void done(int count, ParseException e) {
                             if (e == null) {
-                                mLikes.setText(String.valueOf(count));
-                                Log.d("likes count", "Set likes count: " + count);
+                                mLikeButton.setText(String.valueOf(count));
                             } else {
                                 Log.d("likes", e.getMessage());
                             }
@@ -124,82 +120,8 @@ public class ReviewDetailView extends Activity {
                     });
 
                     // Check if users liked
-                    currentUser = ParseUser.getCurrentUser();
+                    didUserLike(review);
 
-                    ParseQuery<ParseObject> userLikesQuery = ParseQuery.getQuery("Likes");
-                    userLikesQuery.whereEqualTo("review", review);
-                    userLikesQuery.whereEqualTo("user", currentUser);
-
-                    userLikesQuery.findInBackground(new FindCallback<ParseObject>() {
-                        public void done(List<ParseObject> userLikesList, ParseException e) {
-                            if (e == null) {
-
-                                if (userLikesList.size() >= 1) {
-                                    userLiked = true;
-                                    mLikes.setBackgroundColor(getResources().getColor(R.color.blue));
-                                }
-                                else {
-                                    userLiked = false;
-                                    mLikes.setBackgroundColor(getResources().getColor(R.color.tab_lighter_gray));
-                                }
-                            }
-                            else {
-                                // Oops
-                            }
-                        }
-                    });
-
-                    Log.d("reviewable", "Did I like? " + review.getString("userTitle") + " " + userLiked);
-
-                    // Let users like review
-                    mLikes.setOnClickListener(new View.OnClickListener() {
-                        public void onClick(View v) {
-
-                            if (userLiked == false) {
-
-                                Log.d("reviewable", "CLICKED! Delete or add? " + review.getString("userTitle") + " " + userLiked);
-
-                                ParseObject likesObject = new ParseObject("Likes");
-
-                                ParseRelation userRelation = likesObject.getRelation("user");
-                                userRelation.add(currentUser);
-
-                                ParseRelation reviewRelation = likesObject.getRelation("review");
-                                reviewRelation.add(review);
-
-                                likesObject.saveInBackground(new SaveCallback() {
-                                    @Override
-                                    public void done(ParseException e) {
-                                        if (e == null) {
-
-                                        } else {
-                                            Log.d("add like", e.getMessage());
-                                        }
-                                    }
-                                });
-
-                            }
-                            else {
-                                ParseQuery<ParseObject> userLikesQuery = ParseQuery.getQuery("Likes");
-                                userLikesQuery.whereEqualTo("review", review);
-                                userLikesQuery.whereEqualTo("user", currentUser);
-
-                                userLikesQuery.findInBackground(new FindCallback<ParseObject>() {
-                                    public void done(List<ParseObject> userLikesList, ParseException e) {
-                                        if (e == null) {
-                                            for(ParseObject l : userLikesList) {
-                                                l.deleteInBackground();
-                                            }
-                                        }
-                                        else {
-                                            Log.d("delete like", e.getMessage());
-                                        }
-                                    }
-                                });
-                                //refresh likes
-                            }
-                        }
-                    });
                 }
                 else {
                     // Oops
@@ -210,34 +132,90 @@ public class ReviewDetailView extends Activity {
         // Let users like review
         mLikeButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // Get user
-                ParseUser currentUser = ParseUser.getCurrentUser();
-                String currentUsername = currentUser.getUsername();
 
-                // Likes test
-                ParseObject likesObject = new ParseObject("Likes");
-                likesObject.put("reviewId", objectId);
-                likesObject.put("user", currentUsername);
-                likesObject.saveInBackground(new SaveCallback() {
-                    @Override
-                    public void done(ParseException e) {
-                        if (e == null) {
-                            Toast likedMessage = Toast.makeText(ReviewDetailView.this, "Liked!", Toast.LENGTH_LONG);
-                            likedMessage.show();
-                            Log.d("SUCCESS", "YES");
-                        //} else if () {
-                            // if user already liked
-                        } else {
-                            Toast notLikedMessage = Toast.makeText(ReviewDetailView.this, "Something went wrong!", Toast.LENGTH_LONG);
-                            notLikedMessage.show();
-                            Log.d("FAIL", "KUT");
+                //didUserLike(review);
+
+                if (userLiked == false) {
+
+                    ParseObject likesObject = new ParseObject("Likes");
+
+                    ParseRelation userRelation = likesObject.getRelation("user");
+                    userRelation.add(currentUser);
+
+                    ParseRelation reviewRelation = likesObject.getRelation("review");
+                    reviewRelation.add(review);
+
+                    mLikeButton.setBackground(getResources().getDrawable(R.drawable.heart_darker));
+                    int likes = Integer.parseInt(mLikeButton.getText().toString());
+                    likes++;
+                    mLikeButton.setText(likes + "");
+                    userLiked = true;
+
+                    likesObject.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if (e == null) {
+
+                            } else {
+                                Log.d("add like", e.getMessage());
+                            }
                         }
-                    }
-                });
+                    });
+
+                }
+                else {
+                    ParseQuery<ParseObject> userLikesQuery = ParseQuery.getQuery("Likes");
+                    userLikesQuery.whereEqualTo("review", review);
+                    userLikesQuery.whereEqualTo("user", currentUser);
+
+                    mLikeButton.setBackground(getResources().getDrawable(R.drawable.heart_light));
+                    int likes = Integer.parseInt(mLikeButton.getText().toString());
+                    likes--;
+                    mLikeButton.setText(likes + "");
+                    userLiked = false;
+
+                    userLikesQuery.findInBackground(new FindCallback<ParseObject>() {
+                        public void done(List<ParseObject> userLikesList, ParseException e) {
+                            if (e == null) {
+                                for(ParseObject l : userLikesList) {
+                                    l.deleteInBackground();
+                                }
+                            }
+                            else {
+                                Log.d("delete like", e.getMessage());
+                            }
+                        }
+                    });
+                }
             }
         });
     }
 
+    public void didUserLike(ParseObject review) {
+        // Check if users liked
+        currentUser = ParseUser.getCurrentUser();
+
+        ParseQuery<ParseObject> userLikesQuery = ParseQuery.getQuery("Likes");
+        userLikesQuery.whereEqualTo("review", review);
+        userLikesQuery.whereEqualTo("user", currentUser);
+
+        userLikesQuery.findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> userLikesList, ParseException e) {
+                if (e == null) {
+
+                    if (userLikesList.size() >= 1) {
+                        userLiked = true;
+                        mLikeButton.setBackground(getResources().getDrawable(R.drawable.heart_darker));
+                    } else {
+                        userLiked = false;
+                        //holder.likesHome.setBackgroundColor(mContext.getResources().getColor(R.color.tab_lighter_gray));
+                    }
+                } else {
+                    // Oops
+                }
+            }
+        });
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

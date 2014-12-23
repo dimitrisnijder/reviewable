@@ -32,7 +32,6 @@ public class ReviewAdapter extends BaseAdapter {
 
     protected Context mContext;
     protected List<ParseObject> mReview;
-    protected ViewHolder holder;
 
     protected ParseUser currentUser;
     protected String currentUsername;
@@ -64,28 +63,21 @@ public class ReviewAdapter extends BaseAdapter {
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
 
-        LayoutInflater mInflater = (LayoutInflater) mContext.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater mInflater = ((Activity) mContext).getLayoutInflater();
+        final ViewHolder holder;
 
         if (convertView == null) {
-            convertView = mInflater.inflate(R.layout.review_listitem, null);
-
+            convertView = mInflater.inflate(R.layout.review_listitem, parent, false);
             holder = new ViewHolder();
 
-            holder.usernameHomepage = (TextView) convertView
-                    .findViewById(R.id.usernameHome);
-            holder.titleHomepage = (TextView) convertView
-                    .findViewById(R.id.titleHome);
-//            holder.reviewHomepage = (TextView) convertView
-//                    .findViewById(R.id.reviewHome);
-            holder.tagsHomepage = (TextView) convertView
-                    .findViewById(R.id.tagsHome);
-            holder.likesHome = (Button) convertView
-                    .findViewById(R.id.likesHome);
-            holder.imageHomepage = (ParseImageView) convertView
-                    .findViewById(R.id.imageHome);
-
+            holder.usernameHomepage = (TextView) convertView.findViewById(R.id.usernameHome);
+            holder.titleHomepage = (TextView) convertView.findViewById(R.id.titleHome);
+            holder.tagsHomepage = (TextView) convertView.findViewById(R.id.tagsHome);
+            holder.likesHome = (Button) convertView.findViewById(R.id.likesHome);
+            holder.imageHomepage = (ParseImageView) convertView.findViewById(R.id.imageHome);
             holder.ratingHomepage = (TextView) convertView.findViewById(R.id.ratingHome);
 
+            //setting up the Views
             convertView.setTag(holder);
         }
         else {
@@ -117,8 +109,6 @@ public class ReviewAdapter extends BaseAdapter {
             String tagLines = tags.replaceAll(",", "\n");
             holder.tagsHomepage.setText(tagLines);
 
-            Log.d("reviewable", mReview.get(position).getString("userTitle") + " loaded");
-
             // Count likes
             ParseQuery<ParseObject> likesQuery = ParseQuery.getQuery("Likes");
             likesQuery.whereEqualTo("review", mReview.get(position));
@@ -147,66 +137,15 @@ public class ReviewAdapter extends BaseAdapter {
 
                         if (userLikesList.size() >= 1) {
                             userLiked = true;
-                            holder.likesHome.setBackgroundColor(mContext.getResources().getColor(R.color.blue));
+                            holder.likesHome.setBackground(mContext.getResources().getDrawable(R.drawable.heart_darker));
                         }
                         else {
                             userLiked = false;
-                            holder.likesHome.setBackgroundColor(mContext.getResources().getColor(R.color.tab_lighter_gray));
+                            holder.likesHome.setBackground(mContext.getResources().getDrawable(R.drawable.heart_light));
                         }
                     }
                     else {
                         // Oops
-                    }
-
-                    Log.d("reviewable", "Did I like? " + mReview.get(position).getString("userTitle") + " " + userLiked);
-                }
-            });
-
-            // Let users like review
-            holder.likesHome.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-
-                    Log.d("reviewable", "CLICKED! Delete or add? " + mReview.get(position).getString("userTitle") + " " + userLiked);
-
-                    if (userLiked == false) {
-
-                        ParseObject likesObject = new ParseObject("Likes");
-
-                        ParseRelation userRelation = likesObject.getRelation("user");
-                        userRelation.add(currentUser);
-
-                        ParseRelation reviewRelation = likesObject.getRelation("review");
-                        reviewRelation.add(mReview.get(position));
-
-                        likesObject.saveInBackground(new SaveCallback() {
-                            @Override
-                            public void done(ParseException e) {
-                                if (e == null) {
-
-                                } else {
-                                    Log.d("add like", e.getMessage());
-                                }
-                            }
-                        });
-
-                    }
-                    else {
-                        ParseQuery<ParseObject> userLikesQuery = ParseQuery.getQuery("Likes");
-                        userLikesQuery.whereEqualTo("review", mReview.get(position));
-                        userLikesQuery.whereEqualTo("user", currentUser);
-
-                        userLikesQuery.findInBackground(new FindCallback<ParseObject>() {
-                            public void done(List<ParseObject> userLikesList, ParseException e) {
-                                if (e == null) {
-                                    for(ParseObject l : userLikesList) {
-                                        l.deleteInBackground();
-                                    }
-                                }
-                                else {
-                                    Log.d("delete like", e.getMessage());
-                                }
-                            }
-                        });
                     }
                 }
             });
@@ -227,6 +166,67 @@ public class ReviewAdapter extends BaseAdapter {
                 public void done(byte[] data, ParseException e) {
                 }
             });
+
+            // Let users like review
+            holder.likesHome.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+
+                    if (userLiked == false) {
+
+                        ParseObject likesObject = new ParseObject("Likes");
+
+                        ParseRelation userRelation = likesObject.getRelation("user");
+                        userRelation.add(currentUser);
+
+                        ParseRelation reviewRelation = likesObject.getRelation("review");
+                        reviewRelation.add(mReview.get(position));
+
+                        holder.likesHome.setBackground(mContext.getResources().getDrawable(R.drawable.heart_darker));
+                        int likes = Integer.parseInt(holder.likesHome.getText().toString());
+                        likes++;
+                        holder.likesHome.setText(likes + "");
+                        userLiked = true;
+
+                        likesObject.saveInBackground(new SaveCallback() {
+                            @Override
+                            public void done(ParseException e) {
+                                if (e == null) {
+
+                                } else {
+                                    Log.d("add like", e.getMessage());
+                                }
+                            }
+                        });
+
+                    }
+                    else {
+                        ParseQuery<ParseObject> userLikesQuery = ParseQuery.getQuery("Likes");
+                        userLikesQuery.whereEqualTo("review", mReview.get(position));
+                        userLikesQuery.whereEqualTo("user", currentUser);
+
+                        holder.likesHome.setBackground(mContext.getResources().getDrawable(R.drawable.heart_light));
+                        int likes = Integer.parseInt(holder.likesHome.getText().toString());
+                        likes--;
+                        Log.d("likes", holder.titleHomepage.getText() + " " + likes);
+                        holder.likesHome.setText(likes + "");
+                        userLiked = false;
+
+                        userLikesQuery.findInBackground(new FindCallback<ParseObject>() {
+                            public void done(List<ParseObject> userLikesList, ParseException e) {
+                                if (e == null) {
+                                    for(ParseObject l : userLikesList) {
+                                        l.deleteInBackground();
+                                    }
+                                }
+                                else {
+                                    Log.d("delete like", e.getMessage());
+                                }
+                            }
+                        });
+                    }
+                }
+            });
+
         }
 
         return convertView;
