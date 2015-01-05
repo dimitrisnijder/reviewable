@@ -13,7 +13,7 @@
     <string name="register">Register</string>
     <string name="login">Login</string>
     <string name="title_activity_login">Login</string>
-    <string name="title_activity_review">Review</string>
+    <string name="title_activity_review">Add review</string>
     <string name="take_photo">Take photo</string>
     <string name="title_activity_review_detail_view">Review</string>
     <string name="loading">Loading...</string>

@@ -90,10 +90,10 @@ public class ReviewDetailView extends Activity {
                     // Rating
                     Boolean rating = review.getBoolean("userRating");
                     if(rating) {
-                        mRating.setTextColor(getResources().getColor(R.color.green));
+                        mRating.setBackground(getResources().getDrawable(R.drawable.review_good));
                     }
                     else {
-                        mRating.setTextColor(getResources().getColor(R.color.red));
+                        mRating.setBackground(getResources().getDrawable(R.drawable.review_bad));
                     }
 
                     ParseFile userImage = review.getParseFile("userImageFile");
