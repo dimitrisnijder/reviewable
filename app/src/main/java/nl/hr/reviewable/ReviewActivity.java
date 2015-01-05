@@ -45,9 +45,8 @@ public class ReviewActivity extends Activity {
     protected EditText reviewTags;
     //protected Button reviewRating;
     protected ToggleButton reviewRating;
-    protected Boolean rating = false;
     protected String mCurrentPhotoPath;
-
+    protected Boolean rating = true;
 
     protected Button reviewButton;
     protected Bitmap photoTaken;
@@ -108,9 +107,8 @@ public class ReviewActivity extends Activity {
                     dialog.show();
                 }
                 else {
-
                     ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                    photoTaken.compress(Bitmap.CompressFormat.JPEG, 80, stream);
+                    photoTaken.compress(Bitmap.CompressFormat.JPEG, 60, stream);
                     byte[] image = stream.toByteArray();
 
                     // Generate random number for filename

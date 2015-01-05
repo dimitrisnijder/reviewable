@@ -5,7 +5,8 @@
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:layout_height="match_parent"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin"
         android:paddingBottom="@dimen/activity_vertical_margin"
@@ -15,7 +16,7 @@
             android:id="@+id/mImageView"
             android:background="@color/light_gray"
             android:layout_width="fill_parent"
-            android:layout_height="198dp"/>
+            android:layout_height="195dp"/>
 
         <nl.hr.reviewable.CustomButton
             android:layout_width="match_parent"
@@ -34,7 +35,8 @@
             reviewable:editTextFontName="ProximaNova-Regular.otf"
             android:hint="Title"
             android:layout_marginBottom="10dp"
-            android:gravity="top"/>
+            android:gravity="top"
+            android:inputType="textCapSentences" />
 
         <nl.hr.reviewable.CustomEditText
             android:id="@+id/reviewText"
@@ -44,7 +46,8 @@
             android:background="@drawable/edit_text_style"
             reviewable:editTextFontName="ProximaNova-Regular.otf"
             android:layout_marginBottom="10dp"
-            android:gravity="top"/>
+            android:gravity="top"
+            android:inputType="textCapSentences" />
 
         <nl.hr.reviewable.CustomEditText
             android:id="@+id/reviewTags"
@@ -54,7 +57,8 @@
             reviewable:editTextFontName="ProximaNova-Regular.otf"
             android:hint="Tags"
             android:layout_marginBottom="10dp"
-            android:gravity="top"/>
+            android:gravity="top"
+            android:inputType="textCapSentences" />
 
         <ToggleButton
             android:id="@+id/reviewRating"

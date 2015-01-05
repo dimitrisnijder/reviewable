@@ -58,6 +58,7 @@ public class LoginActivity extends Activity {
 
                             Intent sendIntent = new Intent(LoginActivity.this, HomeActivity.class);
                             startActivity(sendIntent);
+                            finish();
                         } else {
                             AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
                             builder.setMessage("Login failed")

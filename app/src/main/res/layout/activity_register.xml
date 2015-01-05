@@ -16,7 +16,8 @@
         android:layout_marginBottom="10dp"
         reviewable:editTextFontName="ProximaNova-Regular.otf"
         android:background="@drawable/edit_text_style"
-        android:singleLine="true" />
+        android:singleLine="true"
+        android:inputType="textCapSentences" />
 
     <nl.hr.reviewable.CustomEditText
         android:layout_width="match_parent"
@@ -26,7 +27,8 @@
         android:layout_marginBottom="10dp"
         reviewable:editTextFontName="ProximaNova-Regular.otf"
         android:background="@drawable/edit_text_style"
-        android:singleLine="true" />
+        android:singleLine="true"
+        android:inputType="textCapSentences" />
 
     <nl.hr.reviewable.CustomEditText
         android:layout_width="match_parent"
@@ -36,7 +38,8 @@
         android:layout_marginBottom="20dp"
         reviewable:editTextFontName="ProximaNova-Regular.otf"
         android:background="@drawable/edit_text_style"
-        android:singleLine="true" />
+        android:singleLine="true"
+        android:inputType="textPassword" />
 
     <nl.hr.reviewable.CustomButton
         android:layout_width="match_parent"
