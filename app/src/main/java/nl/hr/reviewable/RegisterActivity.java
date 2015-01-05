@@ -58,7 +58,7 @@ public class RegisterActivity extends Activity {
 
                             Intent sendIntent = new Intent(RegisterActivity.this, HomeActivity.class);
                             startActivity(sendIntent);
-
+                            finish();
                         }
                         else {
                             Toast registeredErrorMessage = Toast.makeText(RegisterActivity.this, "Registration not successful", Toast.LENGTH_LONG);

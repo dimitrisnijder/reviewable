@@ -33,7 +33,8 @@
             reviewable:editTextFontName="ProximaNova-Regular.otf"
             android:hint="Title"
             android:layout_marginBottom="10dp"
-            android:gravity="top"/>
+            android:gravity="top"
+            android:inputType="textCapSentences" />
 
         <nl.hr.reviewable.CustomEditText
             android:id="@+id/reviewText"
@@ -43,7 +44,8 @@
             android:background="@drawable/edit_text_style"
             reviewable:editTextFontName="ProximaNova-Regular.otf"
             android:layout_marginBottom="10dp"
-            android:gravity="top"/>
+            android:gravity="top"
+            android:inputType="textCapSentences" />
 
         <nl.hr.reviewable.CustomEditText
             android:id="@+id/reviewTags"
@@ -53,7 +55,8 @@
             reviewable:editTextFontName="ProximaNova-Regular.otf"
             android:hint="Tags"
             android:layout_marginBottom="10dp"
-            android:gravity="top"/>
+            android:gravity="top"
+            android:inputType="textCapSentences" />
 
         <ToggleButton
             android:id="@+id/reviewRating"

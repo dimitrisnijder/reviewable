@@ -98,6 +98,7 @@ public class ReviewAdapter extends BaseAdapter {
             Boolean rating = mReview.get(position).getBoolean("userRating");
             if(rating) {
                 //holder.ratingHomepage.setTextColor(mContext.getResources().getColor(R.color.green));
+                holder.ratingHomepage.setBackground(mContext.getResources().getDrawable(R.drawable.review_good));
             }
             else {
                 //holder.ratingHomepage.setTextColor(mContext.getResources().getColor(R.color.red));

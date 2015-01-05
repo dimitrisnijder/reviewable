@@ -38,7 +38,7 @@ public class ReviewActivity extends Activity {
     protected EditText reviewTags;
     //protected Button reviewRating;
     protected ToggleButton reviewRating;
-    protected Boolean rating = false;
+    protected Boolean rating = true;
 
     protected Button reviewButton;
     protected Bitmap bitmap;
@@ -103,7 +103,7 @@ public class ReviewActivity extends Activity {
                     ByteArrayOutputStream stream = new ByteArrayOutputStream();
 
                     // Compress image to lower quality
-                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
                     byte[] image = stream.toByteArray();
 
                     // Generate random number for filename
@@ -111,7 +111,7 @@ public class ReviewActivity extends Activity {
                     int i1 = r.nextInt(999999999 - 100000000) + 10000000;
 
                     // Create file in Parse
-                    ParseFile file = new ParseFile(currentUsername+i1+".png", image);
+                    ParseFile file = new ParseFile(currentUsername+i1+".jpeg", image);
 
                     // Save to parse
                     ParseObject reviewObject = new ParseObject("Review");
