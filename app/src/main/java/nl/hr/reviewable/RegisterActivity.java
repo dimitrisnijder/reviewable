@@ -40,12 +40,14 @@ public class RegisterActivity extends Activity {
                 ParseUser user = new ParseUser();
 
                 String usernameStr = username.getText().toString().trim();
+                String usernameLC = usernameStr.toLowerCase();
                 String passwordStr = password.getText().toString().trim();
                 String emailStr = email.getText().toString().trim();
+                String emailLC = emailStr.toLowerCase();
 
-                user.setUsername(usernameStr);
+                user.setUsername(usernameLC);
                 user.setPassword(passwordStr);
-                user.setEmail(emailStr);
+                user.setEmail(emailLC);
 
                 user.signUpInBackground(new SignUpCallback() {
                     @Override

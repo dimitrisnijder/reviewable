@@ -48,9 +48,10 @@ public class LoginActivity extends Activity {
             public void onClick(View v) {
 
                 String usernameStr = username.getText().toString().trim();
+                String usernameLC = usernameStr.toLowerCase();
                 String passwordStr = password.getText().toString().trim();
 
-                ParseUser.logInInBackground(usernameStr, passwordStr, new LogInCallback() {
+                ParseUser.logInInBackground(usernameLC, passwordStr, new LogInCallback() {
                     public void done(ParseUser user, ParseException e) {
                         if (user != null) {
                             Toast loggedInMessage = Toast.makeText(LoginActivity.this, "Logged in successfully", Toast.LENGTH_LONG);
