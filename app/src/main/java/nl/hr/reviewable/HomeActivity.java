@@ -7,7 +7,6 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -108,8 +107,6 @@ public class HomeActivity extends ListActivity {
             private void isScrollCompleted() {
                 if (currentVisibleItemCount > 0 && currentScrollState == SCROLL_STATE_IDLE && currentTotalItemCount == (currentFirstVisibleItem + currentVisibleItemCount)) {
                     if (!flag_loading) {
-                        Log.d("currentVisibleItemCount", currentVisibleItemCount + "");
-                        Log.d("currentTotalItemCount", currentTotalItemCount + "");
 
                         flag_loading = true;
                         skipReviews += reviewCount;
@@ -121,8 +118,6 @@ public class HomeActivity extends ListActivity {
     }
 
     public void getReviews() {
-
-        Log.d("skip", skipReviews + "");
 
         ParseUser currentUser = ParseUser.getCurrentUser();
         if (currentUser != null) {
