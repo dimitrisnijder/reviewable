@@ -2,6 +2,7 @@ package nl.hr.reviewable;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -50,6 +51,13 @@ public class ReviewDetailView extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_review_detail_view);
+
+        int titleId = getResources().getIdentifier("action_bar_title", "id", "android");
+        TextView titleTextView = (TextView) findViewById(titleId);
+        titleTextView.setTextSize(getResources().getDimension(R.dimen.title_proxima_size));
+        titleTextView.setTextColor(getResources().getColor(R.color.white));
+        Typeface face = Typeface.createFromAsset(getAssets(), "fonts/ProximaNova-Regular.otf");
+        titleTextView.setTypeface(face);
 
         mUser = (TextView)findViewById(R.id.usernameDetail);
         mTitle = (TextView)findViewById(R.id.titleDetail);

@@ -16,7 +16,7 @@
             android:id="@+id/mImageView"
             android:background="@color/light_gray"
             android:layout_width="fill_parent"
-            android:layout_height="195dp"/>
+            android:layout_height="192dp"/>
 
         <nl.hr.reviewable.CustomButton
             android:layout_width="match_parent"
