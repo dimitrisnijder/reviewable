@@ -23,7 +23,7 @@ public class LoginActivity extends Activity {
 
     protected EditText username;
     protected EditText password;
-    protected Button registerButton;
+    protected CustomTextView registerButton;
     protected Button loginButton;
 
     @Override
@@ -42,7 +42,7 @@ public class LoginActivity extends Activity {
 
         username = (EditText) findViewById(R.id.usernameLogin);
         password = (EditText) findViewById(R.id.passwordLogin);
-        registerButton = (Button) findViewById(R.id.loginRegisterButton);
+        registerButton = (CustomTextView) findViewById(R.id.loginRegisterButton);
         loginButton = (Button) findViewById(R.id.loginButton);
 
         registerButton.setOnClickListener(new View.OnClickListener() {
