@@ -23,8 +23,9 @@ public class LoginActivity extends Activity {
 
     protected EditText username;
     protected EditText password;
-    protected CustomTextView registerButton;
+    protected TextView registerButton;
     protected Button loginButton;
+    protected TextView forgotPasswordButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,8 +43,9 @@ public class LoginActivity extends Activity {
 
         username = (EditText) findViewById(R.id.usernameLogin);
         password = (EditText) findViewById(R.id.passwordLogin);
-        registerButton = (CustomTextView) findViewById(R.id.loginRegisterButton);
+        registerButton = (TextView) findViewById(R.id.loginRegisterButton);
         loginButton = (Button) findViewById(R.id.loginButton);
+        forgotPasswordButton = (TextView) findViewById(R.id.loginForgotPassword);
 
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,6 +91,14 @@ public class LoginActivity extends Activity {
             public void onClick(View v) {
 
                 Intent sendIntent = new Intent(LoginActivity.this, RegisterActivity.class);
+                startActivity(sendIntent);
+            }
+        });
+
+        forgotPasswordButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+
+                Intent sendIntent = new Intent(LoginActivity.this, ForgotPasswordActivity.class);
                 startActivity(sendIntent);
             }
         });
