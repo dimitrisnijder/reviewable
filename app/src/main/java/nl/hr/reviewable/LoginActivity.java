@@ -34,7 +34,7 @@ public class LoginActivity extends Activity {
 
         int titleId = getResources().getIdentifier("action_bar_title", "id", "android");
         TextView titleTextView = (TextView) findViewById(titleId);
-        titleTextView.setTextSize(getResources().getDimension(R.dimen.title_size));
+        titleTextView.setTextSize(getResources().getDimension(R.dimen.title_proxima_size));
         titleTextView.setTextColor(getResources().getColor(R.color.white));
         Typeface face = Typeface.createFromAsset(getAssets(), "fonts/ProximaNova-Regular.otf");
         titleTextView.setTypeface(face);
