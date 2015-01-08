@@ -141,10 +141,11 @@ public class ReviewAdapter extends BaseAdapter {
                             userLiked = false;
                             holder.likesHome.setBackground(mContext.getResources().getDrawable(R.drawable.heart_light));
                         }
+
                     }
-                    else {
+                    //else {
                         // Oops
-                    }
+                    //}
                 }
             });
 

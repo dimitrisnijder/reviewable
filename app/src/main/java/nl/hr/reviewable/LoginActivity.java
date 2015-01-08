@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -72,8 +73,10 @@ public class LoginActivity extends Activity {
                             startActivity(sendIntent);
                             finish();
                         } else {
+                            Log.e("error",e.toString());
+
                             AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
-                            builder.setMessage("Login failed")
+                            builder.setMessage("The username and/or password are incorrect.")
                                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int id) {
                                             dialog.dismiss();
@@ -99,8 +102,8 @@ public class LoginActivity extends Activity {
         forgotPasswordButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
-                Intent sendIntent = new Intent(LoginActivity.this, ForgotPasswordActivity.class);
-                startActivity(sendIntent);
+                //Intent sendIntent = new Intent(LoginActivity.this, ForgotPasswordActivity.class);
+                //startActivity(sendIntent);
             }
         });
     }

@@ -92,7 +92,7 @@ public class ReviewActivity extends Activity {
                 if (userTitle == "") {
                     // If review is empty
                     AlertDialog.Builder builder = new AlertDialog.Builder(ReviewActivity.this);
-                    builder.setMessage("Title is empty")
+                    builder.setMessage("Please fill in a title.")
                             .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
                                     dialog.dismiss();
@@ -105,7 +105,7 @@ public class ReviewActivity extends Activity {
                 else if (userReview == "") {
                     // If review is empty
                     AlertDialog.Builder builder = new AlertDialog.Builder(ReviewActivity.this);
-                    builder.setMessage("Review is empty")
+                    builder.setMessage("Please fill in a review.")
                             .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
                                     dialog.dismiss();
