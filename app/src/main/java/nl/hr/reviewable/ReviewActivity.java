@@ -5,7 +5,11 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Menu;
@@ -14,6 +18,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
@@ -25,6 +30,10 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Random;
 
 
@@ -32,21 +41,29 @@ public class ReviewActivity extends Activity {
 
     protected Button cameraButton;
     protected ImageView imageView;
-    static final int REQUEST_IMAGE_CAPTURE = 1;
+    static final int REQUEST_TAKE_PHOTO = 1;
     protected EditText reviewTitle;
     protected EditText reviewText;
     protected EditText reviewTags;
     //protected Button reviewRating;
     protected ToggleButton reviewRating;
+    protected String mCurrentPhotoPath;
     protected Boolean rating = true;
 
     protected Button reviewButton;
-    protected Bitmap bitmap;
+    protected Bitmap photoTaken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_review);
+
+        int titleId = getResources().getIdentifier("action_bar_title", "id", "android");
+        TextView titleTextView = (TextView) findViewById(titleId);
+        titleTextView.setTextSize(getResources().getDimension(R.dimen.title_proxima_size));
+        titleTextView.setTextColor(getResources().getColor(R.color.white));
+        Typeface face = Typeface.createFromAsset(getAssets(), "fonts/ProximaNova-Regular.otf");
+        titleTextView.setTypeface(face);
 
         Parse.initialize(this, "HS0km68yDCSvgftT2KILmFET7DFNESfH1rhVSmR2", "X4G5wb3DokD8aARe8lnLAk2HHDxdGTtsmhQQLw99");
 
@@ -99,11 +116,8 @@ public class ReviewActivity extends Activity {
                     dialog.show();
                 }
                 else {
-                    // Converting of the image
                     ByteArrayOutputStream stream = new ByteArrayOutputStream();
-
-                    // Compress image to lower quality
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                    photoTaken.compress(Bitmap.CompressFormat.JPEG, 60, stream);
                     byte[] image = stream.toByteArray();
 
                     // Generate random number for filename
@@ -111,7 +125,7 @@ public class ReviewActivity extends Activity {
                     int i1 = r.nextInt(999999999 - 100000000) + 10000000;
 
                     // Create file in Parse
-                    ParseFile file = new ParseFile(currentUsername+i1+".jpeg", image);
+                    ParseFile file = new ParseFile(currentUsername+i1+".jpg", image);
 
                     // Save to parse
                     ParseObject reviewObject = new ParseObject("Review");
@@ -159,17 +173,53 @@ public class ReviewActivity extends Activity {
 
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+        // Ensure that there's a camera activity to handle the intent
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+            // Create the File where the photo should go
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException e) {
+                // Error occurred while creating the File
+                Log.d("Photo error", e.getMessage());
+            }
+
+            // Continue only if the File was successfully created
+            if (photoFile != null) {
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
+                startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+            }
         }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            Bundle extras = data.getExtras();
-            bitmap = (Bitmap) extras.get("data");
-            imageView.setImageBitmap(bitmap);
+        if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
+            int targetW = 500;
+            int targetH = 500;
+
+            Log.d("View width", targetW + "");
+
+            // Get the dimensions of the bitmap
+            BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+            bmOptions.inJustDecodeBounds = true;
+            BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
+            int photoW = bmOptions.outWidth;
+            int photoH = bmOptions.outHeight;
+
+            // Determine how much to scale down the image
+            int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
+
+            // Decode the image file into a Bitmap sized to fill the View
+            bmOptions.inJustDecodeBounds = false;
+            bmOptions.inSampleSize = scaleFactor;
+            bmOptions.inPurgeable = true;
+
+            photoTaken = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
+            imageView.setImageBitmap(photoTaken);
+
+            galleryAddPic();
         }
     }
 
@@ -193,5 +243,29 @@ public class ReviewActivity extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,
+                ".jpg",
+                storageDir
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        mCurrentPhotoPath = image.getAbsolutePath();
+        return image;
+    }
+
+    private void galleryAddPic() {
+        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        File f = new File(mCurrentPhotoPath);
+        Uri contentUri = Uri.fromFile(f);
+        mediaScanIntent.setData(contentUri);
+        this.sendBroadcast(mediaScanIntent);
     }
 }

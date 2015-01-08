@@ -97,11 +97,9 @@ public class ReviewAdapter extends BaseAdapter {
             // Rating
             Boolean rating = mReview.get(position).getBoolean("userRating");
             if(rating) {
-                //holder.ratingHomepage.setTextColor(mContext.getResources().getColor(R.color.green));
                 holder.ratingHomepage.setBackground(mContext.getResources().getDrawable(R.drawable.review_good));
             }
             else {
-                //holder.ratingHomepage.setTextColor(mContext.getResources().getColor(R.color.red));
                 holder.ratingHomepage.setBackground(mContext.getResources().getDrawable(R.drawable.review_bad));
             }
 
@@ -118,7 +116,6 @@ public class ReviewAdapter extends BaseAdapter {
                 public void done(int count, ParseException e) {
                     if (e == null) {
                         holder.likesHome.setText(String.valueOf(count));
-                        Log.d("likes count", "Set likes count: " + count);
                     } else {
                         Log.d("likes", e.getMessage());
                     }

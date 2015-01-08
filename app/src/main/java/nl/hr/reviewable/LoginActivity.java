@@ -4,12 +4,14 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.LogInCallback;
@@ -21,20 +23,29 @@ public class LoginActivity extends Activity {
 
     protected EditText username;
     protected EditText password;
-    protected Button registerButton;
+    protected TextView registerButton;
     protected Button loginButton;
+    protected TextView forgotPasswordButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        int titleId = getResources().getIdentifier("action_bar_title", "id", "android");
+        TextView titleTextView = (TextView) findViewById(titleId);
+        titleTextView.setTextSize(getResources().getDimension(R.dimen.title_size));
+        titleTextView.setTextColor(getResources().getColor(R.color.white));
+        Typeface face = Typeface.createFromAsset(getAssets(), "fonts/ProximaNova-Regular.otf");
+        titleTextView.setTypeface(face);
+
         Parse.initialize(this, "HS0km68yDCSvgftT2KILmFET7DFNESfH1rhVSmR2", "X4G5wb3DokD8aARe8lnLAk2HHDxdGTtsmhQQLw99");
 
         username = (EditText) findViewById(R.id.usernameLogin);
         password = (EditText) findViewById(R.id.passwordLogin);
-        registerButton = (Button) findViewById(R.id.loginRegisterButton);
+        registerButton = (TextView) findViewById(R.id.loginRegisterButton);
         loginButton = (Button) findViewById(R.id.loginButton);
+        forgotPasswordButton = (TextView) findViewById(R.id.loginForgotPassword);
 
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,6 +92,14 @@ public class LoginActivity extends Activity {
             public void onClick(View v) {
 
                 Intent sendIntent = new Intent(LoginActivity.this, RegisterActivity.class);
+                startActivity(sendIntent);
+            }
+        });
+
+        forgotPasswordButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+
+                Intent sendIntent = new Intent(LoginActivity.this, ForgotPasswordActivity.class);
                 startActivity(sendIntent);
             }
         });

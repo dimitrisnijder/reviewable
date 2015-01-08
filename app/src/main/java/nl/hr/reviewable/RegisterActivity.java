@@ -3,6 +3,7 @@ package nl.hr.reviewable;
 import android.app.Activity;
 import android.app.TaskStackBuilder;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.view.Menu;
@@ -10,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.ParseException;
@@ -29,6 +31,13 @@ public class RegisterActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         getActionBar().setDisplayHomeAsUpEnabled(true);
+
+        int titleId = getResources().getIdentifier("action_bar_title", "id", "android");
+        TextView titleTextView = (TextView) findViewById(titleId);
+        titleTextView.setTextSize(getResources().getDimension(R.dimen.title_proxima_size));
+        titleTextView.setTextColor(getResources().getColor(R.color.white));
+        Typeface face = Typeface.createFromAsset(getAssets(), "fonts/ProximaNova-Regular.otf");
+        titleTextView.setTypeface(face);
 
         username = (EditText)findViewById(R.id.usernameRegister);
         email = (EditText)findViewById(R.id.emailRegister);

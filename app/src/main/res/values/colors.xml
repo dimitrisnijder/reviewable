@@ -9,4 +9,5 @@
     <color name="tab_lighter_gray">#434343</color>
     <color name="green">#2ECD71</color>
     <color name="red">#c0392b</color>
+    <color name="light_gray">#ffe1e1e1</color>
 </resources>

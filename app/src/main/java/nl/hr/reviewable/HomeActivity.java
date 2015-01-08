@@ -101,13 +101,15 @@ public class HomeActivity extends ListActivity {
                 currentFirstVisibleItem = firstVisibleItem;
                 currentVisibleItemCount = visibleItemCount;
                 currentTotalItemCount = totalItemCount;
+
             }
 
             private void isScrollCompleted() {
                 if (currentVisibleItemCount > 0 && currentScrollState == SCROLL_STATE_IDLE && currentTotalItemCount == (currentFirstVisibleItem + currentVisibleItemCount)) {
                     if (!flag_loading) {
+
                         flag_loading = true;
-                        skipReviews += currentVisibleItemCount;
+                        skipReviews += reviewCount;
                         getReviews();
                     }
                 }

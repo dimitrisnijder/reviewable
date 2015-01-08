@@ -44,13 +44,44 @@
             android:layout_marginBottom="10dp"
             reviewable:buttonFontName="ProximaNova-Regular.otf" />
 
-        <nl.hr.reviewable.CustomButton
-            android:layout_width="match_parent"
+        <nl.hr.reviewable.CustomTextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/loginRegisterButton"
-            android:layout_below="@id/loginButton"
-            reviewable:buttonFontName="ProximaNova-Regular.otf"
-            android:text="@string/register" />
+            android:layout_toRightOf="@+id/loginRegisterText"
+            android:id="@+id/loginForgotPassword"
+            reviewable:fontName="ProximaNova-Regular.otf"
+            android:textColor="@color/tab_lighter_gray"
+            android:text="@string/forgot_password"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:clickable="true" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:layout_marginTop="50dp">
+
+            <nl.hr.reviewable.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/loginRegisterText"
+                reviewable:fontName="ProximaNova-Regular.otf"
+                android:textColor="@color/light_gray"
+                android:text="@string/register_text"
+                android:layout_marginRight="5dp"/>
+
+            <nl.hr.reviewable.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/loginRegisterText"
+                android:id="@+id/loginRegisterButton"
+                reviewable:fontName="ProximaNova-Regular.otf"
+                android:textColor="@color/tab_lighter_gray"
+                android:text="@string/register"
+                android:clickable="true" />
+        </RelativeLayout>
 
     </LinearLayout>
 </ScrollView>
