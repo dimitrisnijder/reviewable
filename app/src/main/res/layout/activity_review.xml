@@ -47,7 +47,7 @@
             reviewable:editTextFontName="ProximaNova-Regular.otf"
             android:layout_marginBottom="10dp"
             android:gravity="top"
-            android:inputType="textCapSentences" />
+            android:inputType="textCapSentences|textMultiLine" />
 
         <nl.hr.reviewable.CustomEditText
             android:id="@+id/reviewTags"
@@ -57,8 +57,7 @@
             reviewable:editTextFontName="ProximaNova-Regular.otf"
             android:hint="Tags"
             android:layout_marginBottom="10dp"
-            android:gravity="top"
-            android:inputType="textCapSentences" />
+            android:gravity="top" />
 
         <ToggleButton
             android:id="@+id/reviewRating"
