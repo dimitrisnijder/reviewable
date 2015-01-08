@@ -89,7 +89,20 @@ public class ReviewActivity extends Activity {
                 String userTags = reviewTags.getText().toString();
                 Boolean userRating = rating;
 
-                if (userTitle.equals("")) {
+                if (photoTaken == null) {
+                    // If review is empty
+                    AlertDialog.Builder builder = new AlertDialog.Builder(ReviewActivity.this);
+                    builder.setMessage("Please upload a photo")
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    // Create the AlertDialog object and return it
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                }
+                else if (userTitle.equals("")) {
                     // If review is empty
                     AlertDialog.Builder builder = new AlertDialog.Builder(ReviewActivity.this);
                     builder.setMessage("Title is empty")
@@ -106,19 +119,6 @@ public class ReviewActivity extends Activity {
                     // If review is empty
                     AlertDialog.Builder builder = new AlertDialog.Builder(ReviewActivity.this);
                     builder.setMessage("Review is empty")
-                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    dialog.dismiss();
-                                }
-                            });
-                    // Create the AlertDialog object and return it
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
-                }
-                else if (photoTaken != null) {
-                    // If review is empty
-                    AlertDialog.Builder builder = new AlertDialog.Builder(ReviewActivity.this);
-                    builder.setMessage("Please upload a photo")
                             .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
                                     dialog.dismiss();
@@ -160,6 +160,7 @@ public class ReviewActivity extends Activity {
                                 // To home screen
                                 Intent goToHome = new Intent(ReviewActivity.this, HomeActivity.class);
                                 startActivity(goToHome);
+                                finish();
                             } else {
                                 // Oops
                                 Log.d("Error on review", e.getMessage());
