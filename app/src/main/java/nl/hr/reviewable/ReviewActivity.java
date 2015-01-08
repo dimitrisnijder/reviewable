@@ -89,10 +89,10 @@ public class ReviewActivity extends Activity {
                 String userTags = reviewTags.getText().toString();
                 Boolean userRating = rating;
 
-                if (userTitle == "") {
+                if (userTitle.equals("")) {
                     // If review is empty
                     AlertDialog.Builder builder = new AlertDialog.Builder(ReviewActivity.this);
-                    builder.setMessage("Please fill in a title.")
+                    builder.setMessage("Title is empty")
                             .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
                                     dialog.dismiss();
@@ -102,10 +102,23 @@ public class ReviewActivity extends Activity {
                     AlertDialog dialog = builder.create();
                     dialog.show();
                 }
-                else if (userReview == "") {
+                else if (userReview.equals("")) {
                     // If review is empty
                     AlertDialog.Builder builder = new AlertDialog.Builder(ReviewActivity.this);
-                    builder.setMessage("Please fill in a review.")
+                    builder.setMessage("Review is empty")
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    // Create the AlertDialog object and return it
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                }
+                else if (photoTaken != null) {
+                    // If review is empty
+                    AlertDialog.Builder builder = new AlertDialog.Builder(ReviewActivity.this);
+                    builder.setMessage("Please upload a photo")
                             .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
                                     dialog.dismiss();
