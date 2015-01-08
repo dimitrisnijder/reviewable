@@ -152,6 +152,7 @@ public class ReviewAdapter extends BaseAdapter {
                 public void onClick(View v) {
                     Intent toDetailView = new Intent(v.getContext(), ReviewDetailView.class);
                     toDetailView.putExtra("objectID", mReview.get(position).getObjectId());
+                    toDetailView.putExtra("from", "home");
                     v.getContext().startActivity(toDetailView);
                 }
             });
