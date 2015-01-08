@@ -55,15 +55,14 @@ public class RegisterActivity extends Activity {
                 String usernameLC = usernameStr.toLowerCase();
                 String passwordStr = password.getText().toString().trim();
                 String emailStr = email.getText().toString().trim();
-                final String emailLC = emailStr.toLowerCase();
 
                 user.setUsername(usernameLC);
                 user.setPassword(passwordStr);
-                user.setEmail(emailLC);
+                user.setEmail(emailStr);
 
                 //Log.e("email", emailLC);
 
-                if (emailLC == "") {
+                if (emailStr.equals("")) {
                     Toast email = Toast.makeText(RegisterActivity.this, "Sorry, no email no account.", Toast.LENGTH_LONG);
                     email.show();
                 }
