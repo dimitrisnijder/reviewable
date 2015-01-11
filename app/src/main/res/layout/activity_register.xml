@@ -8,6 +8,16 @@
     android:paddingTop="20dp"
     android:orientation="vertical" >
 
+    <nl.hr.reviewable.CustomTextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        reviewable:fontName="ProximaNova-Regular.otf"
+        android:textColor="@color/tab_lighter_gray"
+        android:text="@string/email_disclaimer"
+        android:gravity="center"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="30dp"/>
+
     <nl.hr.reviewable.CustomEditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -34,7 +34,7 @@ public class LoginActivity extends Activity {
 
         int titleId = getResources().getIdentifier("action_bar_title", "id", "android");
         TextView titleTextView = (TextView) findViewById(titleId);
-        titleTextView.setTextSize(getResources().getDimension(R.dimen.title_size));
+        titleTextView.setTextSize(getResources().getDimension(R.dimen.title_proxima_size));
         titleTextView.setTextColor(getResources().getColor(R.color.white));
         Typeface face = Typeface.createFromAsset(getAssets(), "fonts/ProximaNova-Regular.otf");
         titleTextView.setTypeface(face);
@@ -59,9 +59,10 @@ public class LoginActivity extends Activity {
             public void onClick(View v) {
 
                 String usernameStr = username.getText().toString().trim();
+                String usernameLC = usernameStr.toLowerCase();
                 String passwordStr = password.getText().toString().trim();
 
-                ParseUser.logInInBackground(usernameStr, passwordStr, new LogInCallback() {
+                ParseUser.logInInBackground(usernameLC, passwordStr, new LogInCallback() {
                     public void done(ParseUser user, ParseException e) {
                         if (user != null) {
                             Toast loggedInMessage = Toast.makeText(LoginActivity.this, "Logged in successfully", Toast.LENGTH_LONG);
@@ -72,7 +73,7 @@ public class LoginActivity extends Activity {
                             finish();
                         } else {
                             AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
-                            builder.setMessage("Login failed")
+                            builder.setMessage("The username and/or password are incorrect.")
                                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int id) {
                                             dialog.dismiss();
@@ -98,8 +99,8 @@ public class LoginActivity extends Activity {
         forgotPasswordButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
-                Intent sendIntent = new Intent(LoginActivity.this, ForgotPasswordActivity.class);
-                startActivity(sendIntent);
+//                Intent sendIntent = new Intent(LoginActivity.this, ForgotPasswordActivity.class);
+//                startActivity(sendIntent);
             }
         });
     }

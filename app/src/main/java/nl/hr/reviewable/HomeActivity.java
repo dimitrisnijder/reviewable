@@ -141,9 +141,9 @@ public class HomeActivity extends ListActivity {
 
                         flag_loading = false;
                     }
-                    else {
+                    //else {
                         // Oops
-                    }
+                    //}
                 }
             });
 

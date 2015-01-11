@@ -1,7 +1,8 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:reviewable="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/bg">
 
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -24,7 +25,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/gradientHome"
-                android:background="@drawable/gradient3"/>
+                android:background="@drawable/gradient"/>
 
             <nl.hr.reviewable.CustomTextView
                 android:layout_width="match_parent"
@@ -98,7 +99,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Review"
-            android:textSize="16dp"
+            android:textSize="14dp"
             android:padding="10dp"
             reviewable:fontName="ProximaNova-Regular.otf" />
 

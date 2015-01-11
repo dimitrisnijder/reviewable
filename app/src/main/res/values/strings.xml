@@ -22,4 +22,5 @@
     <string name="forgot_password">Forgot your password?</string>
     <string name="title_activity_forgot_password">Reset password</string>
     <string name="forgot_password_button">Reset password</string>
+    <string name="email_disclaimer">We won\'t share your e-mail with third parties and we won\'t spam your mailbox. We hate spam as much as you do.</string>
 </resources>
