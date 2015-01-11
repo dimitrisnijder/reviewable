@@ -99,8 +99,8 @@ public class LoginActivity extends Activity {
         forgotPasswordButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
-//                Intent sendIntent = new Intent(LoginActivity.this, ForgotPasswordActivity.class);
-//                startActivity(sendIntent);
+                Intent sendIntent = new Intent(LoginActivity.this, ForgotPasswordActivity.class);
+                startActivity(sendIntent);
             }
         });
     }
