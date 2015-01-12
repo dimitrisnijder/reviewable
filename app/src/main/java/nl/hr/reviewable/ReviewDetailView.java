@@ -1,6 +1,8 @@
 package nl.hr.reviewable;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -40,6 +42,9 @@ public class ReviewDetailView extends Activity {
 
     protected ParseUser currentUser;
     protected Boolean userLiked;
+    protected Boolean ownReview = false;
+    protected MenuItem deleteItem;
+    protected List<ParseObject> userLikes;
 
     public ParseObject review;
 
@@ -73,6 +78,8 @@ public class ReviewDetailView extends Activity {
         Intent intent = getIntent();
         objectId = intent.getStringExtra("objectID");
 
+        currentUser = ParseUser.getCurrentUser();
+
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Review");
         query.getInBackground(objectId, new GetCallback<ParseObject>() {
             @Override
@@ -83,6 +90,10 @@ public class ReviewDetailView extends Activity {
 
                     String userName = review.getString("user");
                     mUser.setText(userName);
+
+                    if(userName.equals(currentUser.getUsername())) {
+                        deleteItem.setVisible(true);
+                    }
 
                     String userTitle = review.getString("userTitle");
                     mTitle.setText(userTitle);
@@ -200,8 +211,6 @@ public class ReviewDetailView extends Activity {
     }
 
     public void didUserLike(ParseObject review) {
-        // Check if users liked
-        currentUser = ParseUser.getCurrentUser();
 
         ParseQuery<ParseObject> userLikesQuery = ParseQuery.getQuery("Likes");
         userLikesQuery.whereEqualTo("review", review);
@@ -210,7 +219,7 @@ public class ReviewDetailView extends Activity {
         userLikesQuery.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> userLikesList, ParseException e) {
                 if (e == null) {
-
+                    userLikes = userLikesList;
                     if (userLikesList.size() >= 1) {
                         userLiked = true;
                         mLikeButton.setBackground(getResources().getDrawable(R.drawable.heart_darker));
@@ -229,6 +238,9 @@ public class ReviewDetailView extends Activity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.review_detail_view, menu);
+        deleteItem = menu.findItem(R.id.action_delete);
+        deleteItem.setVisible(false);
+
         return true;
     }
 
@@ -238,8 +250,39 @@ public class ReviewDetailView extends Activity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
+        if (id == R.id.action_delete) {
+            DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    switch (which){
+                        case DialogInterface.BUTTON_POSITIVE:
+                            try {
+                                review.delete();
+                                for (ParseObject like : userLikes) {
+                                    like.delete();
+                                }
+                            }
+                            catch (ParseException e) {
+                                Log.e("Delete error", e.getMessage());
+                                break;
+                            }
+
+                            Intent sendIntent = new Intent(ReviewDetailView.this, HomeActivity.class);
+                            startActivity(sendIntent);
+                            finish();
+
+                            break;
+
+                        case DialogInterface.BUTTON_NEGATIVE:
+                            dialog.dismiss();
+                            break;
+                    }
+                }
+            };
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(ReviewDetailView.this);
+            builder.setMessage("Are you sure you want to delete this review?").setPositiveButton("Yes", dialogClickListener)
+                    .setNegativeButton("No", dialogClickListener).show();
         }
         if (id == R.id.action_share) {
             // Fetch and store ShareActionProvider
