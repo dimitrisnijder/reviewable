@@ -63,11 +63,14 @@
             android:id="@+id/reviewRating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textOn="Reviewlarious!"
-            android:textOff="Reviewatic..."
+            android:textOn="Positive review"
+            android:textOff="Negative review"
             android:onClick="onToggleClicked"
             android:layout_marginTop="20dp"
-            android:layout_marginBottom="10dp" />
+            android:layout_marginBottom="10dp"
+            android:width="150dp"/>
+        <!--android:textOn="Reviewlarious!"
+            android:textOff="Reviewatic..."-->
 
         <nl.hr.reviewable.CustomButton
             android:id="@+id/reviewButton"
