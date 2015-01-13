@@ -1,9 +1,14 @@
 package nl.hr.reviewable;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ListActivity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -40,6 +45,7 @@ public class HomeActivity extends ListActivity {
     protected int currentVisibleItemCount = 0;
     protected int currentTotalItemCount = 0;
     protected int currentScrollState = 0;
+    static final int DIALOG_ERROR_CONNECTION = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +57,24 @@ public class HomeActivity extends ListActivity {
 
         footerView = ((LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.review_list_footer, null, false);
         getListView().addFooterView(footerView);
+
+        if (!isOnline(this)) {
+            //showDialog(DIALOG_ERROR_CONNECTION); //displaying the created dialog.
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
+            builder.setMessage(DIALOG_ERROR_CONNECTION)
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.dismiss();
+                        }
+                    });
+            // Create the AlertDialog object and return it
+            AlertDialog dialog = builder.create();
+            dialog.show();
+
+        } else {
+            //Internet available. Do what's required when internet is available.
+        }
 
         mReview = new ArrayList<ParseObject>();
         adapter = new ReviewAdapter(getListView().getContext(), mReview);
@@ -115,6 +139,43 @@ public class HomeActivity extends ListActivity {
                 }
             }
         });
+    }
+
+    public boolean isOnline(Context c) {
+        ConnectivityManager cm = (ConnectivityManager) c
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo ni = cm.getActiveNetworkInfo();
+
+        if (ni != null && ni.isConnected())
+            return true;
+        else
+            return false;
+    }
+
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        Dialog dialog = null;
+        switch (id) {
+            case DIALOG_ERROR_CONNECTION:
+                AlertDialog.Builder errorDialog = new AlertDialog.Builder(this);
+                errorDialog.setTitle("Error");
+                errorDialog.setMessage("No internet connection.");
+                errorDialog.setNeutralButton("OK",
+                        new DialogInterface.OnClickListener() {
+
+                            @Override
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.dismiss();
+                            }
+                        });
+
+                AlertDialog errorAlert = errorDialog.create();
+                return errorAlert;
+
+            default:
+                break;
+        }
+        return dialog;
     }
 
     public void getReviews() {

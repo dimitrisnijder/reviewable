@@ -304,7 +304,6 @@ public class ReviewDetailView extends Activity {
     private void setShareIntent(Intent shareIntent) {
         if (mShareActionProvider != null) {
             mShareActionProvider.setShareIntent(shareIntent);
-
         }
     }
 }
