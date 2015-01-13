@@ -1,0 +1,82 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:reviewable="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="60dp"
+    android:paddingRight="60dp"
+    android:paddingTop="20dp"
+    android:orientation="vertical" >
+
+    <nl.hr.reviewable.CustomEditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/usernameUpdate"
+        android:hint="@string/username"
+        android:layout_marginBottom="10dp"
+        reviewable:editTextFontName="ProximaNova-Regular.otf"
+        android:background="@drawable/edit_text_style"
+        android:singleLine="true"
+        android:inputType="textCapSentences" />
+
+    <nl.hr.reviewable.CustomEditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/emailUpdate"
+        android:hint="@string/email"
+        android:layout_marginBottom="20dp"
+        reviewable:editTextFontName="ProximaNova-Regular.otf"
+        android:background="@drawable/edit_text_style"
+        android:singleLine="true"
+        android:inputType="textCapSentences" />
+
+    <nl.hr.reviewable.CustomTextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        reviewable:fontName="ProximaNova-Regular.otf"
+        android:textColor="@color/tab_lighter_gray"
+        android:text="@string/password_update_text"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"/>
+
+    <nl.hr.reviewable.CustomEditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/passwordOldUpdate"
+        android:hint="@string/password"
+        android:layout_marginBottom="10dp"
+        reviewable:editTextFontName="ProximaNova-Regular.otf"
+        android:background="@drawable/edit_text_style"
+        android:singleLine="true"
+        android:inputType="textPassword" />
+
+    <nl.hr.reviewable.CustomEditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/passwordUpdate"
+        android:hint="@string/password"
+        android:layout_marginBottom="10dp"
+        reviewable:editTextFontName="ProximaNova-Regular.otf"
+        android:background="@drawable/edit_text_style"
+        android:singleLine="true"
+        android:inputType="textPassword" />
+
+    <nl.hr.reviewable.CustomEditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/passwordRepeatUpdate"
+        android:hint="@string/password_repeat"
+        android:layout_marginBottom="30dp"
+        reviewable:editTextFontName="ProximaNova-Regular.otf"
+        android:background="@drawable/edit_text_style"
+        android:singleLine="true"
+        android:inputType="textPassword" />
+
+    <nl.hr.reviewable.CustomButton
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:id="@+id/updateButton"
+        android:text="@string/edit_account"
+        reviewable:buttonFontName="ProximaNova-Regular.otf" />
+
+</LinearLayout>

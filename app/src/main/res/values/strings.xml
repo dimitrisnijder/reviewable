@@ -24,4 +24,10 @@
     <string name="title_activity_forgot_password">Reset password</string>
     <string name="forgot_password_button">Reset password</string>
     <string name="email_disclaimer">We won\'t share your e-mail with third parties and we won\'t spam your mailbox. We hate spam as much as you do.</string>
+    <string name="title_activity_edit_account">Edit account</string>
+    <string name="edit_account">Edit account</string>
+    <string name="password_repeat">Confirm password</string>
+    <string name="password_update_text">Fill in if you want to change your password. Leave empty if otherwise.</string>
+    <string name="old_password">Current password</string>
+    <string name="new_password">New password</string>
 </resources>

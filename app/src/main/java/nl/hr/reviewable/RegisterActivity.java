@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -51,8 +50,6 @@ public class RegisterActivity extends Activity {
             public void onClick(View v) {
                 ParseUser user = new ParseUser();
 
-                Log.d("HALLOOO", email.getEditableText().toString());
-
                 String usernameStr = username.getText().toString().trim();
                 String usernameLC = usernameStr.toLowerCase();
                 String passwordStr = password.getText().toString().trim();
@@ -67,7 +64,7 @@ public class RegisterActivity extends Activity {
                     //username.show();
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
-                    builder.setMessage("Sorry, no username no account.")
+                    builder.setMessage("Username is required")
                             .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
                                     dialog.dismiss();
@@ -82,7 +79,7 @@ public class RegisterActivity extends Activity {
                     //email.show();
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
-                    builder.setMessage("Sorry, no email no account.")
+                    builder.setMessage("E-mail is required")
                             .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
                                     dialog.dismiss();
@@ -97,7 +94,7 @@ public class RegisterActivity extends Activity {
                     //password.show();
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
-                    builder.setMessage("Sorry, no password no account.")
+                    builder.setMessage("Password is required")
                             .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
                                     dialog.dismiss();
@@ -112,7 +109,7 @@ public class RegisterActivity extends Activity {
                     //password.show();
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
-                    builder.setMessage("The minimum password length equals 6.")
+                    builder.setMessage("The minimum password length equals 6")
                             .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
                                     dialog.dismiss();

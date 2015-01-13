@@ -173,7 +173,11 @@ public class HomeActivity extends ListActivity {
             case R.id.new_review:
                 Intent reviewIntent = new Intent(HomeActivity.this, ReviewActivity.class);
                 startActivity(reviewIntent);
-                this.finish();
+
+                break;
+            case R.id.edit_account:
+                Intent editAccountIntent = new Intent(HomeActivity.this, EditAccountActivity.class);
+                startActivity(editAccountIntent);
 
                 break;
             case R.id.logout:
