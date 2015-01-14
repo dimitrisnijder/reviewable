@@ -6,6 +6,10 @@
         android:icon="@drawable/ic_action_new"
         android:showAsAction="ifRoom" />
 
+    <item android:id="@+id/edit_account"
+        android:title="Edit account"
+        android:showAsAction="never" />
+
     <item android:id="@+id/logout"
         android:title="Logout"
         android:showAsAction="never" />

@@ -65,6 +65,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="nl.hr.reviewable.LoginActivity" />
         </activity>
+        <activity
+            android:name=".EditAccountActivity"
+            android:label="@string/title_activity_edit_account"
+            android:parentActivityName=".HomeActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="nl.hr.reviewable.HomeActivity" />
+        </activity>
     </application>
 
 </manifest>
