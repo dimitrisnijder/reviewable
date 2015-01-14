@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.v4.app.ShareCompat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -241,6 +242,18 @@ public class ReviewDetailView extends Activity {
         deleteItem = menu.findItem(R.id.action_delete);
         deleteItem.setVisible(false);
 
+        MenuItem menuItem = menu.findItem(R.id.action_share);
+        mShareActionProvider = (ShareActionProvider) menuItem.getActionProvider();
+
+        // Create the share Intent
+        String playStoreLink = "https://play.google.com/store/apps/details?id=" +
+                getPackageName();
+        String yourShareText = "I just wrote a review. Download Reviewable to see it " + playStoreLink;
+        Intent shareIntent = ShareCompat.IntentBuilder.from(this)
+                .setType("text/plain").setText(yourShareText).getIntent();
+        // Set the share Intent
+        mShareActionProvider.setShareIntent(shareIntent);
+
         return true;
     }
 
@@ -285,6 +298,7 @@ public class ReviewDetailView extends Activity {
                     .setNegativeButton("No", dialogClickListener).show();
         }
         if (id == R.id.action_share) {
+            Log.d("Klik", "ie dannn");
             // Fetch and store ShareActionProvider
             mShareActionProvider = (ShareActionProvider) item.getActionProvider();
 
