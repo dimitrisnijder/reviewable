@@ -245,14 +245,26 @@ public class ReviewDetailView extends Activity {
         MenuItem menuItem = menu.findItem(R.id.action_share);
         mShareActionProvider = (ShareActionProvider) menuItem.getActionProvider();
 
-        // Create the share Intent
-        String playStoreLink = "https://play.google.com/store/apps/details?id=" +
-                getPackageName();
-        String yourShareText = "I just wrote a review. Download Reviewable to see it " + playStoreLink;
-        Intent shareIntent = ShareCompat.IntentBuilder.from(this)
-                .setType("text/plain").setText(yourShareText).getIntent();
-        // Set the share Intent
-        mShareActionProvider.setShareIntent(shareIntent);
+        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Review");
+        query.getInBackground(objectId, new GetCallback<ParseObject>() {
+                    @Override
+                    public void done(ParseObject parseObject, ParseException e) {
+                        if (e == null) {
+                            // Success -> Status
+                            review = parseObject;
+
+                            String userTitle = review.getString("userTitle");
+                            // Create the share Intent
+                            String playStoreLink = "https://play.google.com/store/apps/details?id=" +
+                                    getPackageName();
+                            String yourShareText = "I've just read this amazing review: " + userTitle + ". Download Reviewable to see it. " + playStoreLink;
+                            Intent shareIntent = ShareCompat.IntentBuilder.from(ReviewDetailView.this)
+                                    .setType("text/plain").setText(yourShareText).getIntent();
+                            // Set the share Intent
+                            mShareActionProvider.setShareIntent(shareIntent);
+                        }
+                    }
+                });
 
         return true;
     }
@@ -298,7 +310,6 @@ public class ReviewDetailView extends Activity {
                     .setNegativeButton("No", dialogClickListener).show();
         }
         if (id == R.id.action_share) {
-            Log.d("Klik", "ie dannn");
             // Fetch and store ShareActionProvider
             mShareActionProvider = (ShareActionProvider) item.getActionProvider();
 
