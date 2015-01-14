@@ -74,71 +74,72 @@ public class HomeActivity extends ListActivity {
 
         } else {
             //Internet available. Do what's required when internet is available.
-        }
 
-        mReview = new ArrayList<ParseObject>();
-        adapter = new ReviewAdapter(getListView().getContext(), mReview);
-        setListAdapter(adapter);
+            mReview = new ArrayList<ParseObject>();
+            adapter = new ReviewAdapter(getListView().getContext(), mReview);
+            setListAdapter(adapter);
 
-        int titleId = getResources().getIdentifier("action_bar_title", "id", "android");
-        TextView titleTextView = (TextView) findViewById(titleId);
-        titleTextView.setTextSize(getResources().getDimension(R.dimen.title_size));
-        titleTextView.setTextColor(getResources().getColor(R.color.white));
-        face = Typeface.createFromAsset(getAssets(), "fonts/Pacifico.ttf");
-        titleTextView.setTypeface(face);
+            int titleId = getResources().getIdentifier("action_bar_title", "id", "android");
+            TextView titleTextView = (TextView) findViewById(titleId);
+            titleTextView.setTextSize(getResources().getDimension(R.dimen.title_size));
+            titleTextView.setTextColor(getResources().getColor(R.color.white));
+            face = Typeface.createFromAsset(getAssets(), "fonts/Pacifico.ttf");
+            titleTextView.setTypeface(face);
 
-        Parse.initialize(this, "HS0km68yDCSvgftT2KILmFET7DFNESfH1rhVSmR2", "X4G5wb3DokD8aARe8lnLAk2HHDxdGTtsmhQQLw99");
+            Parse.initialize(this, "HS0km68yDCSvgftT2KILmFET7DFNESfH1rhVSmR2", "X4G5wb3DokD8aARe8lnLAk2HHDxdGTtsmhQQLw99");
 
-        getReviews();
+            getReviews();
 
-        list = getListView();
-        swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
-        swipeLayout.setColorSchemeResources(R.color.blue);
-        swipeLayout.setEnabled(false);
+            list = getListView();
+            swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
+            swipeLayout.setColorSchemeResources(R.color.blue);
+            swipeLayout.setEnabled(false);
 
-        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                swipeLayout.setRefreshing(true);
-                ( new Handler()).postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        getReviews();
-                        swipeLayout.setRefreshing(false);
-                    }
-                }, 3000);
-            }
-        });
+            swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    swipeLayout.setRefreshing(true);
+                    (new Handler()).postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            getReviews();
+                            swipeLayout.setRefreshing(false);
+                        }
+                    }, 3000);
+                }
+            });
 
-        list.setOnScrollListener(new AbsListView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(AbsListView view, int scrollState) {
-                currentScrollState = scrollState;
-                isScrollCompleted();
-            }
+            list.setOnScrollListener(new AbsListView.OnScrollListener() {
+                @Override
+                public void onScrollStateChanged(AbsListView view, int scrollState) {
+                    currentScrollState = scrollState;
+                    isScrollCompleted();
+                }
 
-            @Override
-            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                int topRowVerticalPosition = (list == null || list.getChildCount() == 0) ? 0 : list.getChildAt(0).getTop();
-                swipeLayout.setEnabled(topRowVerticalPosition >= 0);
+                @Override
+                public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                    int topRowVerticalPosition = (list == null || list.getChildCount() == 0) ? 0 : list.getChildAt(0).getTop();
+                    swipeLayout.setEnabled(topRowVerticalPosition >= 0);
 
-                currentFirstVisibleItem = firstVisibleItem;
-                currentVisibleItemCount = visibleItemCount;
-                currentTotalItemCount = totalItemCount;
+                    currentFirstVisibleItem = firstVisibleItem;
+                    currentVisibleItemCount = visibleItemCount;
+                    currentTotalItemCount = totalItemCount;
 
-            }
+                }
 
-            private void isScrollCompleted() {
-                if (currentVisibleItemCount > 0 && currentScrollState == SCROLL_STATE_IDLE && currentTotalItemCount == (currentFirstVisibleItem + currentVisibleItemCount)) {
-                    if (!flag_loading) {
+                private void isScrollCompleted() {
+                    if (currentVisibleItemCount > 0 && currentScrollState == SCROLL_STATE_IDLE && currentTotalItemCount == (currentFirstVisibleItem + currentVisibleItemCount)) {
+                        if (!flag_loading) {
 
-                        flag_loading = true;
-                        skipReviews += reviewCount;
-                        getReviews();
+                            flag_loading = true;
+                            skipReviews += reviewCount;
+                            getReviews();
+                        }
                     }
                 }
-            }
-        });
+            });
+
+        }
     }
 
     public boolean isOnline(Context c) {
