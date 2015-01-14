@@ -99,7 +99,7 @@ public class HomeActivity extends ListActivity {
 
             Parse.initialize(this, "HS0km68yDCSvgftT2KILmFET7DFNESfH1rhVSmR2", "X4G5wb3DokD8aARe8lnLAk2HHDxdGTtsmhQQLw99");
 
-            getReviews();
+            getReviews(0, reviewCount);
 
             list = getListView();
             swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
@@ -113,7 +113,9 @@ public class HomeActivity extends ListActivity {
                     (new Handler()).postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            getReviews();
+                            int listSize = mReview.size();
+                            mReview.clear();
+                            getReviews(0, listSize);
                             swipeLayout.setRefreshing(false);
                         }
                     }, 3000);
@@ -143,7 +145,7 @@ public class HomeActivity extends ListActivity {
                         if (!flag_loading) {
 
                             flag_loading = true;
-                            getReviews();
+                            getReviews(mReview.size(), reviewCount);
                         }
                     }
                 }
@@ -163,14 +165,14 @@ public class HomeActivity extends ListActivity {
             return false;
     }
 
-    public void getReviews() {
+    public void getReviews(int skip, int limit) {
         ParseUser currentUser = ParseUser.getCurrentUser();
         if (currentUser != null) {
             // Show home screen with reviews
             ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Review");
             query.orderByDescending("createdAt");
-            query.setSkip(mReview.size());
-            query.setLimit(reviewCount);
+            query.setSkip(skip);
+            query.setLimit(limit);
             query.findInBackground(new FindCallback<ParseObject>() {
                 @Override
                 public void done(List<ParseObject> parseObjects, com.parse.ParseException e) {
