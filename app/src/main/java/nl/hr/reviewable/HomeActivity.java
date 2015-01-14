@@ -1,7 +1,6 @@
 package nl.hr.reviewable;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -51,6 +50,7 @@ public class HomeActivity extends ListActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
         getActionBar().setDisplayShowHomeEnabled(false);
 
         reviewCount = 6;
@@ -58,11 +58,13 @@ public class HomeActivity extends ListActivity {
         footerView = ((LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.review_list_footer, null, false);
         getListView().addFooterView(footerView);
 
+
         if (!isOnline(this)) {
             //showDialog(DIALOG_ERROR_CONNECTION); //displaying the created dialog.
 
             AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
-            builder.setMessage(DIALOG_ERROR_CONNECTION)
+            builder.setTitle("Error");
+            builder.setMessage("There is no internet connection!")
                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             dialog.dismiss();
@@ -151,32 +153,6 @@ public class HomeActivity extends ListActivity {
             return true;
         else
             return false;
-    }
-
-    @Override
-    protected Dialog onCreateDialog(int id) {
-        Dialog dialog = null;
-        switch (id) {
-            case DIALOG_ERROR_CONNECTION:
-                AlertDialog.Builder errorDialog = new AlertDialog.Builder(this);
-                errorDialog.setTitle("Error");
-                errorDialog.setMessage("No internet connection.");
-                errorDialog.setNeutralButton("OK",
-                        new DialogInterface.OnClickListener() {
-
-                            @Override
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.dismiss();
-                            }
-                        });
-
-                AlertDialog errorAlert = errorDialog.create();
-                return errorAlert;
-
-            default:
-                break;
-        }
-        return dialog;
     }
 
     public void getReviews() {
