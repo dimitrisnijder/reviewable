@@ -54,6 +54,13 @@ public class HomeActivity extends ListActivity {
 
         getActionBar().setDisplayShowHomeEnabled(false);
 
+        int titleId = getResources().getIdentifier("action_bar_title", "id", "android");
+        TextView titleTextView = (TextView) findViewById(titleId);
+        titleTextView.setTextSize(getResources().getDimension(R.dimen.title_size));
+        titleTextView.setTextColor(getResources().getColor(R.color.white));
+        face = Typeface.createFromAsset(getAssets(), "fonts/Pacifico.ttf");
+        titleTextView.setTypeface(face);
+
         reviewCount = 6;
 
         footerView = ((LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.review_list_footer, null, false);
@@ -68,9 +75,17 @@ public class HomeActivity extends ListActivity {
             builder.setMessage("There is no internet connection!")
                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
+                            System.exit(0);
                             dialog.dismiss();
                         }
                     });
+            builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                @Override
+                public void onCancel(DialogInterface dialog) {
+                    System.exit(0);
+                    dialog.dismiss();
+                }
+            });
             // Create the AlertDialog object and return it
             AlertDialog dialog = builder.create();
             dialog.show();
@@ -81,13 +96,6 @@ public class HomeActivity extends ListActivity {
             mReview = new ArrayList<ParseObject>();
             adapter = new ReviewAdapter(getListView().getContext(), mReview);
             setListAdapter(adapter);
-
-            int titleId = getResources().getIdentifier("action_bar_title", "id", "android");
-            TextView titleTextView = (TextView) findViewById(titleId);
-            titleTextView.setTextSize(getResources().getDimension(R.dimen.title_size));
-            titleTextView.setTextColor(getResources().getColor(R.color.white));
-            face = Typeface.createFromAsset(getAssets(), "fonts/Pacifico.ttf");
-            titleTextView.setTypeface(face);
 
             Parse.initialize(this, "HS0km68yDCSvgftT2KILmFET7DFNESfH1rhVSmR2", "X4G5wb3DokD8aARe8lnLAk2HHDxdGTtsmhQQLw99");
 
