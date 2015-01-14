@@ -12,6 +12,7 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -132,7 +133,6 @@ public class HomeActivity extends ListActivity {
                         if (!flag_loading) {
 
                             flag_loading = true;
-                            skipReviews += reviewCount;
                             getReviews();
                         }
                     }
@@ -180,13 +180,12 @@ public class HomeActivity extends ListActivity {
     }
 
     public void getReviews() {
-
         ParseUser currentUser = ParseUser.getCurrentUser();
         if (currentUser != null) {
             // Show home screen with reviews
             ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Review");
             query.orderByDescending("createdAt");
-            query.setSkip(skipReviews);
+            query.setSkip(mReview.size());
             query.setLimit(reviewCount);
             query.findInBackground(new FindCallback<ParseObject>() {
                 @Override
@@ -197,6 +196,7 @@ public class HomeActivity extends ListActivity {
                             getListView().removeFooterView(footerView);
                         }
                         else {
+                            Log.d("list size", mReview.size() + "");
                             mReview.addAll(parseObjects);
                             adapter.notifyDataSetChanged();
                         }
