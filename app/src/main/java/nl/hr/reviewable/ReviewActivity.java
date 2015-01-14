@@ -2,6 +2,7 @@ package nl.hr.reviewable;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -48,10 +49,11 @@ public class ReviewActivity extends Activity {
     //protected Button reviewRating;
     protected ToggleButton reviewRating;
     protected String mCurrentPhotoPath;
-    protected Boolean rating = true;
+    protected Boolean rating = false;
 
     protected Button reviewButton;
     protected Bitmap photoTaken;
+    protected ProgressDialog progress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -150,11 +152,15 @@ public class ReviewActivity extends Activity {
 
                     reviewObject.put("userImageFile", file);
 
+                    progress = new ProgressDialog(ReviewActivity.this, ProgressDialog.STYLE_SPINNER);
+                    progress.setMessage("Reviewing...");
+                    progress.show();
+
                     reviewObject.saveInBackground(new SaveCallback() {
                         @Override
                         public void done(ParseException e) {
                             if (e == null) {
-                                // Great success
+                                progress.hide();
                                 Toast.makeText(ReviewActivity.this, "Reviewabled!", Toast.LENGTH_LONG).show();
 
                                 // To home screen
