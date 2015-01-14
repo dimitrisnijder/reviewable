@@ -257,7 +257,7 @@ public class ReviewDetailView extends Activity {
                             // Create the share Intent
                             String playStoreLink = "https://play.google.com/store/apps/details?id=" +
                                     getPackageName();
-                            String yourShareText = "I've just read this amazing review: " + userTitle + ". Download Reviewable to see it. " + playStoreLink;
+                            String yourShareText = "I've just read this amazing review: " + userTitle + ". Download Reviewable to read it. " + playStoreLink;
                             Intent shareIntent = ShareCompat.IntentBuilder.from(ReviewDetailView.this)
                                     .setType("text/plain").setText(yourShareText).getIntent();
                             // Set the share Intent
