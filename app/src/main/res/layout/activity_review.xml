@@ -72,6 +72,16 @@
         <!--android:textOn="Reviewlarious!"
             android:textOff="Reviewatic..."-->
 
+        <nl.hr.reviewable.CustomEditText
+            android:id="@+id/reviewGeo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edit_text_style"
+            reviewable:editTextFontName="ProximaNova-Regular.otf"
+            android:hint="Geo"
+            android:layout_marginBottom="10dp"
+            android:gravity="top" />
+
         <nl.hr.reviewable.CustomButton
             android:id="@+id/reviewButton"
             android:layout_width="match_parent"

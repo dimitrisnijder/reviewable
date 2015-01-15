@@ -3,11 +3,16 @@ package nl.hr.reviewable;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -38,7 +43,10 @@ import java.util.Date;
 import java.util.Random;
 
 
-public class ReviewActivity extends Activity {
+public class ReviewActivity extends Activity implements LocationListener {
+
+    private LocationManager locationManager;
+    private String provider;
 
     protected Button cameraButton;
     protected ImageView imageView;
@@ -50,6 +58,10 @@ public class ReviewActivity extends Activity {
     protected ToggleButton reviewRating;
     protected String mCurrentPhotoPath;
     protected Boolean rating = false;
+
+    protected TextView latituteField;
+    protected TextView longitudeField;
+    protected TextView reviewGeo;
 
     protected Button reviewButton;
     protected Bitmap photoTaken;
@@ -69,6 +81,23 @@ public class ReviewActivity extends Activity {
 
         Parse.initialize(this, "HS0km68yDCSvgftT2KILmFET7DFNESfH1rhVSmR2", "X4G5wb3DokD8aARe8lnLAk2HHDxdGTtsmhQQLw99");
 
+        // Get the location manager
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        // Define the criteria how to select the locatioin provider -> use
+        // default
+        Criteria criteria = new Criteria();
+        provider = locationManager.getBestProvider(criteria, false);
+        Location location = locationManager.getLastKnownLocation(provider);
+        // Initialize the location fields
+        if (location != null) {
+            System.out.println("Provider " + provider + " has been selected.");
+            onLocationChanged(location);
+        } else {
+            //latituteField.setText("Location not available");
+            //longitudeField.setText("Location not available");
+            //reviewGeo.setText("Location not available");
+        }
+
         reviewTitle = (EditText)findViewById(R.id.reviewTitle);
         reviewText = (EditText)findViewById(R.id.reviewText);
         reviewTags = (EditText)findViewById(R.id.reviewTags);
@@ -76,6 +105,10 @@ public class ReviewActivity extends Activity {
         reviewRating = (ToggleButton)findViewById(R.id.reviewRating);
         cameraButton = (Button)findViewById(R.id.cameraButton);
         imageView = (ImageView)findViewById(R.id.mImageView);
+
+        //latituteField = (TextView) findViewById(R.id.reviewGeo);
+        //longitudeField = (TextView) findViewById(R.id.reviewGeo);
+        //reviewGeo = (EditText)findViewById(R.id.reviewGeo);
 
         // Review
         reviewButton.setOnClickListener(new View.OnClickListener() {
@@ -90,6 +123,13 @@ public class ReviewActivity extends Activity {
                 String userReview = reviewText.getText().toString();
                 String userTags = reviewTags.getText().toString();
                 Boolean userRating = rating;
+
+                // String userGeo = lat + long
+                String userGeo = "yolo";
+                Log.i("LATITUDE", latituteField + "");
+                Log.i("LONGITUDE", longitudeField + "");
+
+
 
                 if (photoTaken == null) {
                     // If review is empty
@@ -149,6 +189,7 @@ public class ReviewActivity extends Activity {
                     reviewObject.put("userTags", userTags);
                     reviewObject.put("user", currentUsername);
                     reviewObject.put("userRating", userRating);
+                    reviewObject.put("userGeo", userGeo);
 
                     reviewObject.put("userImageFile", file);
 
@@ -241,6 +282,48 @@ public class ReviewActivity extends Activity {
 
             galleryAddPic();
         }
+    }
+
+    /* Request updates at startup */
+    @Override
+    protected void onResume() {
+        super.onResume();
+        locationManager.requestLocationUpdates(provider, 400, 1, this);
+    }
+
+    /* Remove the locationlistener updates when Activity is paused */
+    @Override
+    protected void onPause() {
+        super.onPause();
+        locationManager.removeUpdates(this);
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        int lat = (int) (location.getLatitude());
+        int lng = (int) (location.getLongitude());
+
+        latituteField.setText(String.valueOf(lat));
+        longitudeField.setText(String.valueOf(lng));
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+        Toast.makeText(this, "Enabled new provider " + provider,
+                Toast.LENGTH_SHORT).show();
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+        Toast.makeText(this, "Disabled provider " + provider,
+                Toast.LENGTH_SHORT).show();
     }
 
     @Override
