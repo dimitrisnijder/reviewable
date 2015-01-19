@@ -23,6 +23,7 @@ import com.parse.ParseRelation;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -76,6 +77,7 @@ public class ReviewAdapter extends BaseAdapter {
             holder.likesHome = (Button) convertView.findViewById(R.id.likesHome);
             holder.imageHomepage = (ParseImageView) convertView.findViewById(R.id.imageHome);
             holder.ratingHomepage = (TextView) convertView.findViewById(R.id.ratingHome);
+            holder.createdHomepage = (TextView)convertView.findViewById(R.id.createdHome);
 
             //setting up the Views
             convertView.setTag(holder);
@@ -93,6 +95,45 @@ public class ReviewAdapter extends BaseAdapter {
             // Title
             String title = mReview.get(position).getString("userTitle");
             holder.titleHomepage.setText(title);
+
+            Date created = mReview.get(position).getCreatedAt();
+            Date current = new Date();
+
+            long diff = current.getTime() - created.getTime();
+            String difference;
+
+            int minutes = (int) (diff / (60 * 1000));
+            int hours = (int) (diff / (60 * 60 * 1000));
+            int days = (int) (diff / (24 * 60 * 60 * 1000));
+
+            if(minutes < 60) {
+                if(minutes == 1) {
+                    difference = minutes + " minute ago";
+                }
+                else {
+                    difference = minutes + " minutes ago";
+                }
+            }
+            else if(hours < 23) {
+                if(hours == 1) {
+                    difference = hours + " hour ago";
+                }
+                else {
+                    difference = hours + " hours ago";
+                }
+            }
+            else {
+                if(days == 1) {
+                    difference = days + " day ago";
+                }
+                else {
+                    difference = days + " days ago";
+                }
+            }
+
+            holder.createdHomepage.setText(difference);
+
+
 
             // Rating
             Boolean rating = mReview.get(position).getBoolean("userRating");
@@ -235,7 +276,7 @@ public class ReviewAdapter extends BaseAdapter {
     public static class ViewHolder {
         TextView usernameHomepage;
         TextView titleHomepage;
-        //TextView reviewHomepage;
+        TextView createdHomepage;
         TextView tagsHomepage;
         Button likesHome;
         ParseImageView imageHomepage;

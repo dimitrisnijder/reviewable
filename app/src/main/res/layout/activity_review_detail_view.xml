@@ -32,7 +32,6 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/titleDetail"
                 android:textSize="22dp"
-                android:text="Title"
                 android:layout_above="@+id/usernameDetail"
                 android:paddingLeft="10dp"
                 android:textColor="@color/white"
@@ -43,13 +42,25 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/usernameDetail"
                 android:textSize="13dp"
-                android:text="Username"
                 android:paddingTop="5dp"
                 android:paddingLeft="10dp"
                 android:paddingBottom="10dp"
                 android:layout_alignParentBottom="true"
                 android:textColor="@color/white"
                 android:textAllCaps="true"
+                reviewable:fontName="ProximaNova-Regular.otf" />
+
+            <nl.hr.reviewable.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/createdDetail"
+                android:textSize="13dp"
+                android:paddingTop="5dp"
+                android:paddingRight="10dp"
+                android:paddingBottom="10dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:textColor="@color/white"
                 reviewable:fontName="ProximaNova-Regular.otf" />
 
         </RelativeLayout>
@@ -73,7 +84,6 @@
                 android:layout_weight="1"
                 android:id="@+id/tagsDetail"
                 android:textSize="12dp"
-                android:text="Tags"
                 android:background="@color/tab_dark_gray"
                 android:gravity="center"
                 android:textColor="@color/white"
@@ -106,7 +116,6 @@
             android:id="@+id/reviewDetail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Review"
             android:textSize="14dp"
             android:padding="10dp"
             reviewable:fontName="ProximaNova-Regular.otf" />

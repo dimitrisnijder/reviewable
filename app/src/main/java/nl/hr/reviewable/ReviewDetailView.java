@@ -32,7 +32,11 @@ import com.parse.ParseRelation;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+<<<<<<< HEAD
 import java.io.IOException;
+=======
+import java.util.Date;
+>>>>>>> 823d07b4ca6b0f03f6cc79fa2e656a7598681167
 import java.util.List;
 import java.util.Locale;
 
@@ -48,6 +52,11 @@ public class ReviewDetailView extends Activity {
     protected TextView mRating;
     protected TextView mLocation;
     protected ParseImageView mImage;
+<<<<<<< HEAD
+=======
+    protected TextView mCreated;
+
+>>>>>>> 823d07b4ca6b0f03f6cc79fa2e656a7598681167
     protected ParseUser currentUser;
     protected Boolean userLiked;
     protected Boolean ownReview = false;
@@ -76,7 +85,11 @@ public class ReviewDetailView extends Activity {
         mTags = (TextView)findViewById(R.id.tagsDetail);
         mRating = (TextView)findViewById(R.id.ratingDetail);
         mImage = (ParseImageView)findViewById(R.id.imageDetail);
+<<<<<<< HEAD
         mLocation = (TextView)findViewById(R.id.locationDetail);
+=======
+        mCreated = (TextView)findViewById(R.id.createdDetail);
+>>>>>>> 823d07b4ca6b0f03f6cc79fa2e656a7598681167
 
         mLikeButton = (Button)findViewById(R.id.likeButton);
 
@@ -117,6 +130,7 @@ public class ReviewDetailView extends Activity {
                     String userTags = review.getString("userTags");
                     mTags.setText(userTags);
 
+<<<<<<< HEAD
                     ParseGeoPoint location = review.getParseGeoPoint("location");
                     double lat = location.getLatitude();
                     double lon = location.getLongitude();
@@ -147,6 +161,44 @@ public class ReviewDetailView extends Activity {
                         }
                     }
 
+=======
+                    Date created = review.getCreatedAt();
+                    Date current = new Date();
+
+                    long diff = current.getTime() - created.getTime();
+                    String difference;
+
+                    int minutes = (int) (diff / (60 * 1000));
+                    int hours = (int) (diff / (60 * 60 * 1000));
+                    int days = (int) (diff / (24 * 60 * 60 * 1000));
+
+                    if(minutes < 60) {
+                        if(minutes == 1) {
+                            difference = minutes + " minute ago";
+                        }
+                        else {
+                            difference = minutes + " minutes ago";
+                        }
+                    }
+                    else if(hours < 23) {
+                        if(hours == 1) {
+                            difference = hours + " hour ago";
+                        }
+                        else {
+                            difference = hours + " hours ago";
+                        }
+                    }
+                    else {
+                        if(days == 1) {
+                            difference = days + " day ago";
+                        }
+                        else {
+                            difference = days + " days ago";
+                        }
+                    }
+
+                    mCreated.setText(difference);
+>>>>>>> 823d07b4ca6b0f03f6cc79fa2e656a7598681167
 
                     // Rating
                     Boolean rating = review.getBoolean("userRating");
