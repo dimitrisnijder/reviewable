@@ -88,6 +88,7 @@ public class ReviewActivity extends Activity implements LocationListener {
         Criteria criteria = new Criteria();
         provider = locationManager.getBestProvider(criteria, false);
         Location location = locationManager.getLastKnownLocation(provider);
+        Log.i("Location", location + "");
         // Initialize the location fields
         if (location != null) {
             System.out.println("Provider " + provider + " has been selected.");
@@ -305,12 +306,15 @@ public class ReviewActivity extends Activity implements LocationListener {
 
         latituteField.setText(String.valueOf(lat));
         longitudeField.setText(String.valueOf(lng));
+
+        Log.i("OnLocationChanged Lat", latituteField + "");
+        Log.i("OnLocationChanged Lng", longitudeField + "");
     }
 
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
         // TODO Auto-generated method stub
-
+        Log.i("OnStatusChanged", "testen");
     }
 
     @Override
