@@ -31,6 +31,7 @@ import android.widget.ToggleButton;
 import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
@@ -59,9 +60,9 @@ public class ReviewActivity extends Activity implements LocationListener {
     protected String mCurrentPhotoPath;
     protected Boolean rating = false;
 
-    protected TextView latituteField;
-    protected TextView longitudeField;
-    protected TextView reviewGeo;
+    protected double lat;
+    protected double lon;
+    protected ParseGeoPoint loc;
 
     protected Button reviewButton;
     protected Bitmap photoTaken;
@@ -87,7 +88,7 @@ public class ReviewActivity extends Activity implements LocationListener {
         // default
         Criteria criteria = new Criteria();
         provider = locationManager.getBestProvider(criteria, false);
-        Location location = locationManager.getLastKnownLocation(provider);
+        final Location location = locationManager.getLastKnownLocation(provider);
         Log.i("Location", location + "");
         // Initialize the location fields
         if (location != null) {
@@ -124,12 +125,10 @@ public class ReviewActivity extends Activity implements LocationListener {
                 String userReview = reviewText.getText().toString();
                 String userTags = reviewTags.getText().toString();
                 Boolean userRating = rating;
+                loc = new ParseGeoPoint(lat, lon);
 
-                // String userGeo = lat + long
-                String userGeo = "yolo";
-                Log.i("LATITUDE", latituteField + "");
-                Log.i("LONGITUDE", longitudeField + "");
-
+                Log.i("LATITUDE", lat + "");
+                Log.i("LONGITUDE", lon + "");
 
 
                 if (photoTaken == null) {
@@ -190,7 +189,7 @@ public class ReviewActivity extends Activity implements LocationListener {
                     reviewObject.put("userTags", userTags);
                     reviewObject.put("user", currentUsername);
                     reviewObject.put("userRating", userRating);
-                    reviewObject.put("userGeo", userGeo);
+                    reviewObject.put("location", loc);
 
                     reviewObject.put("userImageFile", file);
 
@@ -301,14 +300,11 @@ public class ReviewActivity extends Activity implements LocationListener {
 
     @Override
     public void onLocationChanged(Location location) {
-        int lat = (int) (location.getLatitude());
-        int lng = (int) (location.getLongitude());
+        lat = (int) (location.getLatitude());
+        lon = (int) (location.getLongitude());
 
-        latituteField.setText(String.valueOf(lat));
-        longitudeField.setText(String.valueOf(lng));
-
-        Log.i("OnLocationChanged Lat", latituteField + "");
-        Log.i("OnLocationChanged Lng", longitudeField + "");
+        Log.i("OnLocationChanged Lat", lat + "");
+        Log.i("OnLocationChanged Lng", lon + "");
     }
 
     @Override
