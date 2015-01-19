@@ -28,6 +28,7 @@ import com.parse.ParseRelation;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -40,6 +41,7 @@ public class ReviewDetailView extends Activity {
     protected TextView mTags;
     protected TextView mRating;
     protected ParseImageView mImage;
+    protected TextView mCreated;
 
     protected ParseUser currentUser;
     protected Boolean userLiked;
@@ -71,6 +73,7 @@ public class ReviewDetailView extends Activity {
         mTags = (TextView)findViewById(R.id.tagsDetail);
         mRating = (TextView)findViewById(R.id.ratingDetail);
         mImage = (ParseImageView)findViewById(R.id.imageDetail);
+        mCreated = (TextView)findViewById(R.id.createdDetail);
 
         mLikeButton = (Button)findViewById(R.id.likeButton);
 
@@ -106,6 +109,43 @@ public class ReviewDetailView extends Activity {
 
                     String userTags = review.getString("userTags");
                     mTags.setText(userTags);
+
+                    Date created = review.getCreatedAt();
+                    Date current = new Date();
+
+                    long diff = current.getTime() - created.getTime();
+                    String difference;
+
+                    int minutes = (int) (diff / (60 * 1000));
+                    int hours = (int) (diff / (60 * 60 * 1000));
+                    int days = (int) (diff / (24 * 60 * 60 * 1000));
+
+                    if(minutes < 60) {
+                        if(minutes == 1) {
+                            difference = minutes + " minute ago";
+                        }
+                        else {
+                            difference = minutes + " minutes ago";
+                        }
+                    }
+                    else if(hours < 23) {
+                        if(hours == 1) {
+                            difference = hours + " hour ago";
+                        }
+                        else {
+                            difference = hours + " hours ago";
+                        }
+                    }
+                    else {
+                        if(days == 1) {
+                            difference = days + " day ago";
+                        }
+                        else {
+                            difference = days + " days ago";
+                        }
+                    }
+
+                    mCreated.setText(difference);
 
                     // Rating
                     Boolean rating = review.getBoolean("userRating");

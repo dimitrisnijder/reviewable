@@ -49,6 +49,20 @@
             android:textAllCaps="true"
             reviewable:fontName="ProximaNova-Regular.otf" />
 
+        <nl.hr.reviewable.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/createdHome"
+            android:textSize="13dp"
+            android:text="Created at"
+            android:paddingTop="5dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="10dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:textColor="@color/white"
+            reviewable:fontName="ProximaNova-Regular.otf" />
+
     </RelativeLayout>
 
     <LinearLayout
