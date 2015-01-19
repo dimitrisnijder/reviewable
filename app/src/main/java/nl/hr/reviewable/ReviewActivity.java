@@ -100,6 +100,8 @@ public class ReviewActivity extends Activity implements LocationListener {
             //reviewGeo.setText("Location not available");
         }
 
+
+
         reviewTitle = (EditText)findViewById(R.id.reviewTitle);
         reviewText = (EditText)findViewById(R.id.reviewText);
         reviewTags = (EditText)findViewById(R.id.reviewTags);
@@ -129,7 +131,6 @@ public class ReviewActivity extends Activity implements LocationListener {
 
                 Log.i("LATITUDE", lat + "");
                 Log.i("LONGITUDE", lon + "");
-
 
                 if (photoTaken == null) {
                     // If review is empty

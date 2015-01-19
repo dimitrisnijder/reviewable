@@ -95,6 +95,14 @@
         </LinearLayout>
 
         <nl.hr.reviewable.CustomTextView
+            android:id="@+id/locationDetail"
+            android:textSize="12dp"
+            android:text="Location"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            reviewable:fontName="ProximaNova-Regular.otf" />
+
+        <nl.hr.reviewable.CustomTextView
             android:id="@+id/reviewDetail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

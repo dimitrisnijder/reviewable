@@ -5,6 +5,9 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.location.Address;
+import android.location.Geocoder;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ShareCompat;
 import android.util.Log;
@@ -21,6 +24,7 @@ import com.parse.GetCallback;
 import com.parse.GetDataCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseImageView;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -28,29 +32,30 @@ import com.parse.ParseRelation;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 
 
 public class ReviewDetailView extends Activity {
 
     String objectId;
+
     protected TextView mUser;
     protected TextView mTitle;
     protected TextView mReview;
     protected TextView mTags;
     protected TextView mRating;
+    protected TextView mLocation;
     protected ParseImageView mImage;
-
     protected ParseUser currentUser;
     protected Boolean userLiked;
     protected Boolean ownReview = false;
     protected MenuItem deleteItem;
     protected List<ParseObject> userLikes;
-
+    protected Geocoder geocoder;
     public ParseObject review;
-
     protected Button mLikeButton;
-
     private ShareActionProvider mShareActionProvider;
 
     @Override
@@ -71,8 +76,13 @@ public class ReviewDetailView extends Activity {
         mTags = (TextView)findViewById(R.id.tagsDetail);
         mRating = (TextView)findViewById(R.id.ratingDetail);
         mImage = (ParseImageView)findViewById(R.id.imageDetail);
+        mLocation = (TextView)findViewById(R.id.locationDetail);
 
         mLikeButton = (Button)findViewById(R.id.likeButton);
+
+
+        // Reverse Geocoding
+        geocoder = new Geocoder(this, Locale.ENGLISH);
 
 
         // Intent
@@ -106,6 +116,37 @@ public class ReviewDetailView extends Activity {
 
                     String userTags = review.getString("userTags");
                     mTags.setText(userTags);
+
+                    ParseGeoPoint location = review.getParseGeoPoint("location");
+                    double lat = location.getLatitude();
+                    double lon = location.getLongitude();
+
+
+                    if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD && Geocoder.isPresent()) {
+                        Log.d("GEOCODER", "DOEN");
+                        try {
+                            List<Address> addresses = geocoder.getFromLocation(lat, lon, 1);
+                            Log.d("addresses", addresses + "");
+
+                            Log.d("LocationTestActivity", "Geocoder.isPresent : " + Geocoder.isPresent());
+
+                            if (addresses != null) {
+                                //Address returnedAddress = addresses.get(0);
+                                //StringBuilder strReturnedAddress = new StringBuilder("Address:\n");
+                                //for(int i=0; i<returnedAddress.getMaxAddressLineIndex(); i++) {
+                                //strReturnedAddress.append(returnedAddress.getAddressLine(i)).append("\n");
+                                //}
+
+                                //Log.d("mickmick", addresses.get(0) + "");
+                                //mLocation.setText(returnedAddress.toString());
+                            } else {
+                                Log.e("Error:", "Geen adres");
+                            }
+                        } catch (IOException b) {
+                            Log.e("Get street", b.getMessage());
+                        }
+                    }
+
 
                     // Rating
                     Boolean rating = review.getBoolean("userRating");
