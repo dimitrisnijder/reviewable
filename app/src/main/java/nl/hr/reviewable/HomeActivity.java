@@ -68,7 +68,6 @@ public class HomeActivity extends ListActivity {
 
 
         if (!isOnline(this)) {
-            //showDialog(DIALOG_ERROR_CONNECTION); //displaying the created dialog.
 
             AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
             builder.setTitle("Error");

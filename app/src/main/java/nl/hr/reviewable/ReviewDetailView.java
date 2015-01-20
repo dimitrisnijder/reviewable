@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.location.Address;
 import android.location.Geocoder;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ShareCompat;
@@ -32,11 +33,8 @@ import com.parse.ParseRelation;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
-<<<<<<< HEAD
 import java.io.IOException;
-=======
 import java.util.Date;
->>>>>>> 823d07b4ca6b0f03f6cc79fa2e656a7598681167
 import java.util.List;
 import java.util.Locale;
 
@@ -52,11 +50,7 @@ public class ReviewDetailView extends Activity {
     protected TextView mRating;
     protected TextView mLocation;
     protected ParseImageView mImage;
-<<<<<<< HEAD
-=======
     protected TextView mCreated;
-
->>>>>>> 823d07b4ca6b0f03f6cc79fa2e656a7598681167
     protected ParseUser currentUser;
     protected Boolean userLiked;
     protected Boolean ownReview = false;
@@ -66,6 +60,10 @@ public class ReviewDetailView extends Activity {
     public ParseObject review;
     protected Button mLikeButton;
     private ShareActionProvider mShareActionProvider;
+
+    protected double lat;
+    protected double lon;
+    protected String address;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,18 +83,12 @@ public class ReviewDetailView extends Activity {
         mTags = (TextView)findViewById(R.id.tagsDetail);
         mRating = (TextView)findViewById(R.id.ratingDetail);
         mImage = (ParseImageView)findViewById(R.id.imageDetail);
-<<<<<<< HEAD
         mLocation = (TextView)findViewById(R.id.locationDetail);
-=======
         mCreated = (TextView)findViewById(R.id.createdDetail);
->>>>>>> 823d07b4ca6b0f03f6cc79fa2e656a7598681167
-
         mLikeButton = (Button)findViewById(R.id.likeButton);
-
 
         // Reverse Geocoding
         geocoder = new Geocoder(this, Locale.ENGLISH);
-
 
         // Intent
         Intent intent = getIntent();
@@ -130,38 +122,52 @@ public class ReviewDetailView extends Activity {
                     String userTags = review.getString("userTags");
                     mTags.setText(userTags);
 
-<<<<<<< HEAD
                     ParseGeoPoint location = review.getParseGeoPoint("location");
-                    double lat = location.getLatitude();
-                    double lon = location.getLongitude();
 
+                    if(location != null) {
+                        lat = location.getLatitude();
+                        lon = location.getLongitude();
 
-                    if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD && Geocoder.isPresent()) {
-                        Log.d("GEOCODER", "DOEN");
-                        try {
-                            List<Address> addresses = geocoder.getFromLocation(lat, lon, 1);
-                            Log.d("addresses", addresses + "");
+                        if(lat == 0 && lon == 0) {
+                            mLocation.setText("No location");
+                            mLocation.setClickable(false);
+                        }
+                        else {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD && Geocoder.isPresent()) {
+                                try {
+                                    List<Address> addresses = geocoder.getFromLocation(lat, lon, 1);
 
-                            Log.d("LocationTestActivity", "Geocoder.isPresent : " + Geocoder.isPresent());
+                                    if (addresses.size() != 0) {
 
-                            if (addresses != null) {
-                                //Address returnedAddress = addresses.get(0);
-                                //StringBuilder strReturnedAddress = new StringBuilder("Address:\n");
-                                //for(int i=0; i<returnedAddress.getMaxAddressLineIndex(); i++) {
-                                //strReturnedAddress.append(returnedAddress.getAddressLine(i)).append("\n");
-                                //}
+                                        Address returnedAddress = addresses.get(0);
+                                        StringBuilder strReturnedAddress = new StringBuilder("");
 
-                                //Log.d("mickmick", addresses.get(0) + "");
-                                //mLocation.setText(returnedAddress.toString());
-                            } else {
-                                Log.e("Error:", "Geen adres");
+                                        for (int i = 0; i <= returnedAddress.getMaxAddressLineIndex(); i++) {
+                                            if (returnedAddress.getAddressLine(i) != null) {
+                                                if (i != 0) {
+                                                    strReturnedAddress.append(", ");
+                                                }
+                                                strReturnedAddress.append(returnedAddress.getAddressLine(i));
+                                            }
+                                        }
+
+                                        address = strReturnedAddress.toString();
+
+                                        mLocation.setText(strReturnedAddress);
+                                        mLocation.setClickable(true);
+                                        mLocation.setTextColor(getResources().getColor(R.color.blue));
+                                    }
+                                } catch (IOException b) {
+                                    Log.e("Get street", b.getMessage());
+                                }
                             }
-                        } catch (IOException b) {
-                            Log.e("Get street", b.getMessage());
                         }
                     }
+                    else {
+                        mLocation.setText("No location");
+                        mLocation.setClickable(false);
+                    }
 
-=======
                     Date created = review.getCreatedAt();
                     Date current = new Date();
 
@@ -180,7 +186,7 @@ public class ReviewDetailView extends Activity {
                             difference = minutes + " minutes ago";
                         }
                     }
-                    else if(hours < 23) {
+                    else if(hours < 24) {
                         if(hours == 1) {
                             difference = hours + " hour ago";
                         }
@@ -198,7 +204,6 @@ public class ReviewDetailView extends Activity {
                     }
 
                     mCreated.setText(difference);
->>>>>>> 823d07b4ca6b0f03f6cc79fa2e656a7598681167
 
                     // Rating
                     Boolean rating = review.getBoolean("userRating");
@@ -300,6 +305,15 @@ public class ReviewDetailView extends Activity {
                         }
                     });
                 }
+            }
+        });
+
+        mLocation.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                String uri = String.format(Locale.ENGLISH, "geo:%f,%f?z=%d&q=%s",
+                        lat, lon, 11, address);
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+                ReviewDetailView.this.startActivity(intent);
             }
         });
     }

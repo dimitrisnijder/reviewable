@@ -3,13 +3,11 @@ package nl.hr.reviewable;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
-import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -22,10 +20,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.parse.Parse;
@@ -55,7 +54,7 @@ public class ReviewActivity extends Activity implements LocationListener {
     protected EditText reviewTitle;
     protected EditText reviewText;
     protected EditText reviewTags;
-    //protected Button reviewRating;
+    protected Switch locationSwitch;
     protected ToggleButton reviewRating;
     protected String mCurrentPhotoPath;
     protected Boolean rating = false;
@@ -67,6 +66,9 @@ public class ReviewActivity extends Activity implements LocationListener {
     protected Button reviewButton;
     protected Bitmap photoTaken;
     protected ProgressDialog progress;
+    protected ProgressDialog progressLocation;
+
+    protected boolean saveLocation = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,26 +84,6 @@ public class ReviewActivity extends Activity implements LocationListener {
 
         Parse.initialize(this, "HS0km68yDCSvgftT2KILmFET7DFNESfH1rhVSmR2", "X4G5wb3DokD8aARe8lnLAk2HHDxdGTtsmhQQLw99");
 
-        // Get the location manager
-        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        // Define the criteria how to select the locatioin provider -> use
-        // default
-        Criteria criteria = new Criteria();
-        provider = locationManager.getBestProvider(criteria, false);
-        final Location location = locationManager.getLastKnownLocation(provider);
-        Log.i("Location", location + "");
-        // Initialize the location fields
-        if (location != null) {
-            System.out.println("Provider " + provider + " has been selected.");
-            onLocationChanged(location);
-        } else {
-            //latituteField.setText("Location not available");
-            //longitudeField.setText("Location not available");
-            //reviewGeo.setText("Location not available");
-        }
-
-
-
         reviewTitle = (EditText)findViewById(R.id.reviewTitle);
         reviewText = (EditText)findViewById(R.id.reviewText);
         reviewTags = (EditText)findViewById(R.id.reviewTags);
@@ -109,10 +91,9 @@ public class ReviewActivity extends Activity implements LocationListener {
         reviewRating = (ToggleButton)findViewById(R.id.reviewRating);
         cameraButton = (Button)findViewById(R.id.cameraButton);
         imageView = (ImageView)findViewById(R.id.mImageView);
+        locationSwitch = (Switch)findViewById(R.id.saveLocation);
 
-        //latituteField = (TextView) findViewById(R.id.reviewGeo);
-        //longitudeField = (TextView) findViewById(R.id.reviewGeo);
-        //reviewGeo = (EditText)findViewById(R.id.reviewGeo);
+        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
         // Review
         reviewButton.setOnClickListener(new View.OnClickListener() {
@@ -128,9 +109,6 @@ public class ReviewActivity extends Activity implements LocationListener {
                 String userTags = reviewTags.getText().toString();
                 Boolean userRating = rating;
                 loc = new ParseGeoPoint(lat, lon);
-
-                Log.i("LATITUDE", lat + "");
-                Log.i("LONGITUDE", lon + "");
 
                 if (photoTaken == null) {
                     // If review is empty
@@ -190,7 +168,10 @@ public class ReviewActivity extends Activity implements LocationListener {
                     reviewObject.put("userTags", userTags);
                     reviewObject.put("user", currentUsername);
                     reviewObject.put("userRating", userRating);
-                    reviewObject.put("location", loc);
+
+                    if(saveLocation) {
+                        reviewObject.put("location", loc);
+                    }
 
                     reviewObject.put("userImageFile", file);
 
@@ -198,12 +179,13 @@ public class ReviewActivity extends Activity implements LocationListener {
                     progress.setMessage("Reviewing...");
                     progress.show();
 
+                    locationManager.removeUpdates(ReviewActivity.this);
+
                     reviewObject.saveInBackground(new SaveCallback() {
                         @Override
                         public void done(ParseException e) {
                             if (e == null) {
                                 progress.hide();
-                                Toast.makeText(ReviewActivity.this, "Reviewabled!", Toast.LENGTH_LONG).show();
 
                                 // To home screen
                                 Intent goToHome = new Intent(ReviewActivity.this, HomeActivity.class);
@@ -226,11 +208,32 @@ public class ReviewActivity extends Activity implements LocationListener {
             }
         });
 
-    }
+        reviewRating.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                rating = isChecked;
+            }
+        });
 
-    public void onToggleClicked(View view) {
-        // Is the toggle on?
-        rating = ((ToggleButton) view).isChecked();
+        locationSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                saveLocation = isChecked;
+                if(saveLocation == true) {
+
+                    if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+                        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 300, 0, ReviewActivity.this);
+                    }
+                    else {
+                        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 300, 0, ReviewActivity.this);
+                    }
+
+                    progressLocation = new ProgressDialog(ReviewActivity.this, ProgressDialog.STYLE_SPINNER);
+                    progressLocation.setMessage("Fetching location...");
+                    progressLocation.show();
+
+                }
+            }
+        });
+
     }
 
     private void dispatchTakePictureIntent() {
@@ -261,8 +264,6 @@ public class ReviewActivity extends Activity implements LocationListener {
             int targetW = 500;
             int targetH = 500;
 
-            Log.d("View width", targetW + "");
-
             // Get the dimensions of the bitmap
             BitmapFactory.Options bmOptions = new BitmapFactory.Options();
             bmOptions.inJustDecodeBounds = true;
@@ -285,14 +286,19 @@ public class ReviewActivity extends Activity implements LocationListener {
         }
     }
 
-    /* Request updates at startup */
     @Override
     protected void onResume() {
         super.onResume();
-        locationManager.requestLocationUpdates(provider, 400, 1, this);
+
+        if(saveLocation == true) {
+            if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 300, 0, ReviewActivity.this);
+            } else {
+                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 300, 0, ReviewActivity.this);
+            }
+        }
     }
 
-    /* Remove the locationlistener updates when Activity is paused */
     @Override
     protected void onPause() {
         super.onPause();
@@ -301,30 +307,26 @@ public class ReviewActivity extends Activity implements LocationListener {
 
     @Override
     public void onLocationChanged(Location location) {
-        lat = (int) (location.getLatitude());
-        lon = (int) (location.getLongitude());
+        if(location != null) {
+            lat = location.getLatitude();
+            lon = location.getLongitude();
 
-        Log.i("OnLocationChanged Lat", lat + "");
-        Log.i("OnLocationChanged Lng", lon + "");
+            if(progressLocation != null) {
+                progressLocation.hide();
+            }
+        }
     }
 
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
-        // TODO Auto-generated method stub
-        Log.i("OnStatusChanged", "testen");
     }
 
     @Override
     public void onProviderEnabled(String provider) {
-        Toast.makeText(this, "Enabled new provider " + provider,
-                Toast.LENGTH_SHORT).show();
-
     }
 
     @Override
     public void onProviderDisabled(String provider) {
-        Toast.makeText(this, "Disabled provider " + provider,
-                Toast.LENGTH_SHORT).show();
     }
 
     @Override

@@ -114,7 +114,7 @@ public class ReviewAdapter extends BaseAdapter {
                     difference = minutes + " minutes ago";
                 }
             }
-            else if(hours < 23) {
+            else if(hours < 24) {
                 if(hours == 1) {
                     difference = hours + " hour ago";
                 }
