@@ -32,12 +32,16 @@ public class LoginActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        getActionBar().setDisplayShowHomeEnabled(false);
+
         int titleId = getResources().getIdentifier("action_bar_title", "id", "android");
         TextView titleTextView = (TextView) findViewById(titleId);
-        titleTextView.setTextSize(getResources().getDimension(R.dimen.title_proxima_size));
+        titleTextView.setTextSize(getResources().getDimension(R.dimen.title_size));
         titleTextView.setTextColor(getResources().getColor(R.color.white));
-        Typeface face = Typeface.createFromAsset(getAssets(), "fonts/ProximaNova-Regular.otf");
+        Typeface face = Typeface.createFromAsset(getAssets(), "fonts/Pacifico.ttf");
         titleTextView.setTypeface(face);
+
+        getWindow().setBackgroundDrawable(getResources().getDrawable(R.drawable.background1));
 
         Parse.initialize(this, "HS0km68yDCSvgftT2KILmFET7DFNESfH1rhVSmR2", "X4G5wb3DokD8aARe8lnLAk2HHDxdGTtsmhQQLw99");
 

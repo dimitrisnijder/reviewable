@@ -35,6 +35,8 @@ public class ForgotPasswordActivity extends Activity {
         Typeface face = Typeface.createFromAsset(getAssets(), "fonts/ProximaNova-Regular.otf");
         titleTextView.setTypeface(face);
 
+        getWindow().setBackgroundDrawable(getResources().getDrawable(R.drawable.background1));
+
         resetPasswordEmail = (EditText)findViewById(R.id.resetPasswordEmail);
         resetPasswordButton = (Button)findViewById(R.id.resetPasswordButton);
 
@@ -77,11 +79,6 @@ public class ForgotPasswordActivity extends Activity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
 
         return super.onOptionsItemSelected(item);
     }

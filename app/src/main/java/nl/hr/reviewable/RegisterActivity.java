@@ -41,6 +41,8 @@ public class RegisterActivity extends Activity {
         Typeface face = Typeface.createFromAsset(getAssets(), "fonts/ProximaNova-Regular.otf");
         titleTextView.setTypeface(face);
 
+        getWindow().setBackgroundDrawable(getResources().getDrawable(R.drawable.background1));
+
         username = (EditText)findViewById(R.id.usernameRegister);
         email = (EditText)findViewById(R.id.emailRegister);
         password = (EditText)findViewById(R.id.passwordRegister);

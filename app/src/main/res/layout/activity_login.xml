@@ -2,14 +2,14 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:reviewable="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:paddingLeft="60dp"
-        android:paddingRight="60dp"
-        android:paddingBottom="15dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="60dp"
+        android:layout_marginRight="60dp"
+        android:layout_marginBottom="15dp"
         android:orientation="vertical"
         android:layout_gravity="bottom">
 
@@ -50,7 +50,7 @@
             android:layout_toRightOf="@+id/loginRegisterText"
             android:id="@+id/loginForgotPassword"
             reviewable:fontName="ProximaNova-Regular.otf"
-            android:textColor="@color/tab_lighter_gray"
+            android:textColor="@color/lighter_gray"
             android:text="@string/forgot_password"
             android:layout_gravity="center"
             android:layout_marginTop="10dp"
@@ -68,7 +68,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/loginRegisterText"
                 reviewable:fontName="ProximaNova-Regular.otf"
-                android:textColor="@color/light_gray"
+                android:textColor="@color/medium_gray"
                 android:text="@string/register_text"
                 android:layout_marginRight="5dp"/>
 
@@ -78,7 +78,7 @@
                 android:layout_toRightOf="@+id/loginRegisterText"
                 android:id="@+id/loginRegisterButton"
                 reviewable:fontName="ProximaNova-Regular.otf"
-                android:textColor="@color/tab_lighter_gray"
+                android:textColor="@color/lighter_gray"
                 android:text="@string/register"
                 android:clickable="true" />
         </RelativeLayout>
