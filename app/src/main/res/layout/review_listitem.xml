@@ -76,7 +76,7 @@
             android:layout_weight="1"
             android:id="@+id/ratingHome"
             android:gravity="center"
-            android:background="@drawable/review_good"/>
+            android:background="@drawable/review_like"/>
 
         <nl.hr.reviewable.CustomTextView
             android:layout_width="0dp"

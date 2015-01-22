@@ -138,10 +138,10 @@ public class ReviewAdapter extends BaseAdapter {
             // Rating
             Boolean rating = mReview.get(position).getBoolean("userRating");
             if(rating) {
-                holder.ratingHomepage.setBackground(mContext.getResources().getDrawable(R.drawable.review_good));
+                holder.ratingHomepage.setBackground(mContext.getResources().getDrawable(R.drawable.review_like));
             }
             else {
-                holder.ratingHomepage.setBackground(mContext.getResources().getDrawable(R.drawable.review_bad));
+                holder.ratingHomepage.setBackground(mContext.getResources().getDrawable(R.drawable.review_dislike));
             }
 
             // Tags
