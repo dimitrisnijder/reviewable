@@ -119,8 +119,10 @@ public class ReviewDetailView extends Activity {
                     String userReview = review.getString("userReview");
                     mReview.setText(userReview);
 
-                    String userTags = review.getString("userTags");
-                    mTags.setText(userTags);
+                    // Tags
+                    String tags = review.getString("userTags");
+                    String tagLines = tags.replaceAll(",", "\n");
+                    mTags.setText(tagLines);
 
                     ParseGeoPoint location = review.getParseGeoPoint("location");
 
@@ -208,10 +210,10 @@ public class ReviewDetailView extends Activity {
                     // Rating
                     Boolean rating = review.getBoolean("userRating");
                     if(rating) {
-                        mRating.setBackground(getResources().getDrawable(R.drawable.review_good));
+                        mRating.setBackground(getResources().getDrawable(R.drawable.review_like));
                     }
                     else {
-                        mRating.setBackground(getResources().getDrawable(R.drawable.review_bad));
+                        mRating.setBackground(getResources().getDrawable(R.drawable.review_dislike));
                     }
 
                     ParseFile userImage = review.getParseFile("userImageFile");

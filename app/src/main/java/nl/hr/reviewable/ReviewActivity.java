@@ -124,9 +124,22 @@ public class ReviewActivity extends Activity implements LocationListener {
                     dialog.show();
                 }
                 else if (userTitle.equals("")) {
-                    // If review is empty
+                    // If title is empty
                     AlertDialog.Builder builder = new AlertDialog.Builder(ReviewActivity.this);
                     builder.setMessage("Title is empty")
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    // Create the AlertDialog object and return it
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                }
+                else if (userTitle.length() < 3) {
+                    // If title is under 3 chars
+                    AlertDialog.Builder builder = new AlertDialog.Builder(ReviewActivity.this);
+                    builder.setMessage("Title needs at least 3 characters")
                             .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
                                     dialog.dismiss();

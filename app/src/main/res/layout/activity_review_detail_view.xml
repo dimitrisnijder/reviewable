@@ -75,7 +75,7 @@
                 android:layout_height="fill_parent"
                 android:layout_weight="1"
                 android:id="@+id/ratingDetail"
-                android:background="@drawable/review_good"
+                android:background="@drawable/review_like"
                 android:gravity="center"/>
 
             <nl.hr.reviewable.CustomTextView
